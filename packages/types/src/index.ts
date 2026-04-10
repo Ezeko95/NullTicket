@@ -1,4 +1,2 @@
-export interface HealthResponse {
-    ok: boolean;
-    service: string;
-}
+export * from "./auth";
+export * from "./health";
