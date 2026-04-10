@@ -1,0 +1,23 @@
+{
+    "name": "nullticket",
+    "private": true,
+    "scripts": {
+        "lint": "corepack pnpm -r --if-present lint",
+        "lint:fix": "corepack pnpm -r --if-present lint:fix",
+        "format": "prettier . --write",
+        "format:check": "prettier . --check",
+        "dev:web": "corepack pnpm --filter web dev",
+        "dev:api": "corepack pnpm --filter api dev",
+        "build:web": "corepack pnpm --filter web build",
+        "build:api": "corepack pnpm --filter api build",
+        "start:web": "corepack pnpm --filter web start",
+        "start:api": "corepack pnpm --filter api start"
+    },
+    "devDependencies": {
+        "@eslint/js": "latest",
+        "eslint": "latest",
+        "globals": "latest",
+        "prettier": "latest",
+        "typescript-eslint": "latest"
+    }
+}

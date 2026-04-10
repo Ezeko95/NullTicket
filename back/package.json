@@ -1,0 +1,22 @@
+{
+    "name": "api",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "tsx watch src/index.ts",
+        "build": "tsc -p tsconfig.json",
+        "start": "node dist/index.js",
+        "lint": "eslint . --no-error-on-unmatched-pattern",
+        "lint:fix": "eslint . --fix --no-error-on-unmatched-pattern"
+    },
+    "dependencies": {
+        "@repo/types": "workspace:*",
+        "express": "latest"
+    },
+    "devDependencies": {
+        "@types/express": "latest",
+        "@types/node": "latest",
+        "tsx": "latest",
+        "typescript": "latest"
+    }
+}
