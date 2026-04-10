@@ -52,7 +52,7 @@ export default function ComprarTickets() {
 
             <button
                 onClick={handleComprar}
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 transition-all transform hover:scale-[1.02] py-5 rounded-2xl font-bold text-xl mb-4 shadow-lg shadow-blue-500/30 text-white"
+                className="w-full bg-linear-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 transition-all transform hover:scale-[1.02] py-5 rounded-2xl font-bold text-xl mb-4 shadow-lg shadow-blue-500/30 text-white"
             >
                 Confirmar Compra
             </button>

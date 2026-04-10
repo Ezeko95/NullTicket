@@ -25,6 +25,8 @@
 # Icon must end with two \r
 Icon
 
+# Claude
+.CLAUDE.md*
 
 # Thumbnails
 ._*
@@ -246,3 +248,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,macos,windows,node,nextjs
+
+# vscode
+.vscode/*

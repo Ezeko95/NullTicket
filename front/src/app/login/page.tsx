@@ -26,7 +26,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
       <div className="glass-panel w-full max-w-md p-10">
-        <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-sky-500 bg-clip-text text-transparent mb-2">
+        <div className="text-2xl font-bold bg-linear-to-r from-blue-400 to-sky-500 bg-clip-text text-transparent mb-2">
           SmartTickets AI
         </div>
         <p className="text-gray-400 text-sm mb-8">Ingresá tus credenciales para continuar</p>
@@ -71,7 +71,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="mt-2 w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 disabled:opacity-50 disabled:cursor-not-allowed py-3 rounded-xl font-bold text-white transition-all transform hover:scale-[1.02] shadow-lg shadow-blue-500/20"
+            className="mt-2 w-full bg-linear-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 disabled:opacity-50 disabled:cursor-not-allowed py-3 rounded-xl font-bold text-white transition-all transform hover:scale-[1.02] shadow-lg shadow-blue-500/20"
           >
             {isLoading ? 'Ingresando...' : 'Ingresar'}
           </button>

@@ -79,7 +79,7 @@ export default function AIAssistant() {
             <div className="bg-purple-900/40 p-6 border-b border-purple-500/30 flex gap-4 items-center">
                 <span className="text-4xl filter drop-shadow-md">✨</span>
                 <div>
-                    <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-300 bg-clip-text text-transparent">
+                    <h2 className="text-2xl font-bold bg-linear-to-r from-purple-400 to-pink-300 bg-clip-text text-transparent">
                         Asistente IA Interactivo
                     </h2>
                     <p className="text-sm text-purple-300/70 mt-1">

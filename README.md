@@ -2,11 +2,11 @@
 
 Monorepo base con esta estructura:
 
-- `apps/web`: frontend con Next.js + TypeScript
-- `apps/api`: backend simple con Express + TypeScript
+- `front`: frontend con Next.js + TypeScript
+- `back`: backend simple con Express + TypeScript
 - `packages/types`: tipos compartidos del workspace
 
-TypeScript queda desacoplado por paquete. Si en el futuro queres sacarlo de `apps/api` y dejarlo solo en `apps/web`, o viceversa, no hace falta moverlo al root: cada app declara sus propias dependencias y scripts.
+TypeScript queda desacoplado por paquete. Si en el futuro queres sacarlo de `back` y dejarlo solo en `front`, o viceversa, no hace falta moverlo al root: cada app declara sus propias dependencias y scripts.
 
 Formateo y lint:
 
@@ -24,9 +24,9 @@ Archivos base agregados:
 - `eslint.config.mjs`
 - `.prettierrc.json`
 - `.prettierignore`
-- `apps/web/package.json`
-- `apps/api/package.json`
-- `apps/api/tsconfig.json`
-- `apps/api/src/index.ts`
+- `back/package.json`
+- `back/package.json`
+- `back/tsconfig.json`
+- `back/src/index.ts`
 - `packages/types/package.json`
 - `packages/types/src/index.ts`
