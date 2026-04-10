@@ -1,0 +1,27 @@
+{
+    "name": "web",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "eslint . --no-error-on-unmatched-pattern",
+        "lint:fix": "eslint . --fix --no-error-on-unmatched-pattern"
+    },
+    "dependencies": {
+        "@repo/types": "workspace:*",
+        "next": "latest",
+        "react": "latest",
+        "react-dom": "latest"
+    },
+    "devDependencies": {
+        "@eslint/js": "latest",
+        "@next/eslint-plugin-next": "latest",
+        "@types/node": "latest",
+        "@types/react": "latest",
+        "@types/react-dom": "latest",
+        "eslint": "latest",
+        "globals": "latest",
+        "typescript": "latest"
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "name": "@repo/types",
+    "version": "0.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "lint": "eslint . --no-error-on-unmatched-pattern",
+        "lint:fix": "eslint . --fix --no-error-on-unmatched-pattern"
+    },
+    "exports": {
+        ".": {
+            "types": "./src/index.ts",
+            "default": "./src/index.ts"
+        }
+    }
+}
