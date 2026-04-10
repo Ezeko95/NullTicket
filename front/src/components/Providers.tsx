@@ -1,7 +1,12 @@
 'use client';
 
+import { AuthProvider } from '@/context/AuthContext';
 import { TicketProvider } from '@/context/TicketContext';
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  return <TicketProvider>{children}</TicketProvider>;
+  return (
+    <AuthProvider>
+      <TicketProvider>{children}</TicketProvider>
+    </AuthProvider>
+  );
 }
