@@ -6,7 +6,7 @@ export default function MisTickets() {
     const { misTickets } = useTickets();
 
     return (
-        <div className="glass-panel p-8 min-h-[500px]">
+        <div className="glass-panel p-8 min-h-125">
             <h2 className="text-3xl font-bold mb-6">
                 Inventario de Tickets Personales
             </h2>

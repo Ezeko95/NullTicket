@@ -14,7 +14,7 @@ export function Sidebar() {
 
     return (
         <aside className="dashboard-sidebar p-6 flex flex-col gap-4">
-            <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-sky-500 bg-clip-text text-transparent">
+            <div className="text-2xl font-bold bg-linear-to-r from-blue-400 to-sky-500 bg-clip-text text-transparent">
                 SmartTickets AI
             </div>
             <nav className="mt-8 flex flex-col gap-2">
