@@ -2,22 +2,43 @@
     "name": "nullticket",
     "private": true,
     "scripts": {
-        "lint": "corepack pnpm -r --if-present lint",
-        "lint:fix": "corepack pnpm -r --if-present lint:fix",
+        "prepare": "husky",
+        "precommit": "lint-staged",
+        "lint": "corepack pnpm -r --if-present --no-bail lint",
+        "lint:fix": "corepack pnpm -r --if-present --no-bail lint:fix",
         "format": "prettier . --write",
         "format:check": "prettier . --check",
-        "dev:web": "corepack pnpm --filter web dev",
+        "dev:web": "corepack pnpm --filter front dev",
         "dev:api": "corepack pnpm --filter api dev",
-        "build:web": "corepack pnpm --filter web build",
+        "build:web": "corepack pnpm --filter front build",
         "build:api": "corepack pnpm --filter api build",
-        "start:web": "corepack pnpm --filter web start",
+        "start:web": "corepack pnpm --filter front start",
         "start:api": "corepack pnpm --filter api start"
     },
     "devDependencies": {
-        "@eslint/js": "latest",
-        "eslint": "latest",
+        "@eslint/js": "^9.39.4",
+        "eslint": "^9.39.4",
         "globals": "latest",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.4.0",
         "prettier": "latest",
         "typescript-eslint": "latest"
+    },
+    "lint-staged": {
+        "front/**/*.{js,jsx,ts,tsx}": [
+            "pnpm --dir front exec eslint --fix",
+            "prettier --write"
+        ],
+        "back/**/*.{js,jsx,ts,tsx}": [
+            "pnpm --dir back exec eslint --fix",
+            "prettier --write"
+        ],
+        "packages/**/*.{js,jsx,ts,tsx}": [
+            "eslint --fix",
+            "prettier --write"
+        ],
+        "*.{json,css,md,yml,yaml}": [
+            "prettier --write"
+        ]
     }
 }
