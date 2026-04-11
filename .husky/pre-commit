@@ -1,1 +1,2 @@
-pnpm precommit
+echo "Running pre-commit fixes..."
+sh scripts/precommit.sh
