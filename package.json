@@ -2,6 +2,8 @@
     "name": "nullticket",
     "private": true,
     "scripts": {
+        "prepare": "husky",
+        "precommit": "lint-staged",
         "lint": "corepack pnpm -r --if-present --no-bail lint",
         "lint:fix": "corepack pnpm -r --if-present --no-bail lint:fix",
         "format": "prettier . --write",
@@ -14,10 +16,29 @@
         "start:api": "corepack pnpm --filter api start"
     },
     "devDependencies": {
-        "@eslint/js": "latest",
-        "eslint": "latest",
+        "@eslint/js": "^9.39.4",
+        "eslint": "^9.39.4",
         "globals": "latest",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.4.0",
         "prettier": "latest",
         "typescript-eslint": "latest"
+    },
+    "lint-staged": {
+        "front/**/*.{js,jsx,ts,tsx}": [
+            "pnpm --dir front exec eslint --fix",
+            "prettier --write"
+        ],
+        "back/**/*.{js,jsx,ts,tsx}": [
+            "pnpm --dir back exec eslint --fix",
+            "prettier --write"
+        ],
+        "packages/**/*.{js,jsx,ts,tsx}": [
+            "eslint --fix",
+            "prettier --write"
+        ],
+        "*.{json,css,md,yml,yaml}": [
+            "prettier --write"
+        ]
     }
 }
