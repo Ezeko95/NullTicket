@@ -2,8 +2,8 @@
     "name": "nullticket",
     "private": true,
     "scripts": {
-        "lint": "corepack pnpm -r --if-present lint",
-        "lint:fix": "corepack pnpm -r --if-present lint:fix",
+        "lint": "corepack pnpm -r --if-present --no-bail lint",
+        "lint:fix": "corepack pnpm -r --if-present --no-bail lint:fix",
         "format": "prettier . --write",
         "format:check": "prettier . --check",
         "dev:web": "corepack pnpm --filter web dev",
