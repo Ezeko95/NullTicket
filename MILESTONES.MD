@@ -6,3 +6,6 @@ Gian - migración Vite → Next.js 16, auth frontend (login page, AuthContext, p
 
 11/4
 Facu - Sign in endpoint + husky + formatting in general
+
+12/4
+Gian - Events catalog screen (Route Handler + Server Component, mock data, availability states)
