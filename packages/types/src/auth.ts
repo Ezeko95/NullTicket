@@ -9,8 +9,6 @@ export type RegisterRequest = {
     password: string;
 };
 
-export type RegisterInput = RegisterRequest;
-
 export type LoginRequest = RegisterRequest;
 
 export type LoginResponse = {

@@ -1,8 +1,8 @@
-import type { RegisterRequest } from "@repo/types"; // 1
+import type { RegisterRequest } from "@repo/types";
 import type { Request, Response } from "express";
 import { HttpError } from "../common/HttpError.js";
-import { register } from "../services/authService.js"; //2
-//3
+import { register } from "../services/authService.js";
+
 const hasRegisterFields = (body: unknown): body is RegisterRequest =>
     typeof body === "object" &&
     body !== null &&
@@ -30,8 +30,8 @@ const parseRegisterRequest = (body: unknown): RegisterRequest => {
 
 export const registerController = async (req: Request, res: Response) => {
     try {
-        const registerRequest = parseRegisterRequest(req.body); //variable interna renombrada
-        const result = await register(registerRequest); //llamada al servicio renombrada
+        const registerRequest = parseRegisterRequest(req.body);
+        const result = await register(registerRequest);
 
         res.status(result.created ? 201 : 200).json({
             ok: true,

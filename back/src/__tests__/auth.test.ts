@@ -20,10 +20,10 @@ describe("Auth Service - Register Unit Tests", () => {
         vi.clearAllMocks();
     });
 
-    it("Debe registrar un usuario exitosamente cuando los datos son válidos", async () => {
+    it("should register a user successfully when data is valid", async () => {
         const mockUser = {
             id: 1,
-            email: "nueva@dev.com",
+            email: "new@dev.com",
             createdAt: new Date().toISOString()
         };
 
@@ -32,26 +32,26 @@ describe("Auth Service - Register Unit Tests", () => {
         ).mockResolvedValue(mockUser);
 
         const result = await register({
-            email: "nueva@dev.com",
+            email: "new@dev.com",
             password: "password123"
         });
 
         expect(result.created).toBe(true);
-        expect(result.user.email).toBe("nueva@dev.com");
+        expect(result.user.email).toBe("new@dev.com");
         expect(userModel.createUser).toHaveBeenCalled();
     });
 
-    it("Debe lanzar un error 409 si el usuario ya existe", async () => {
+    it("should throw a 409 error if user already exists", async () => {
         (
             userModel.createUser as unknown as ReturnType<typeof vi.fn>
         ).mockRejectedValue(new Error("Duplicate"));
         (
             userModel.findUserByEmail as unknown as ReturnType<typeof vi.fn>
-        ).mockResolvedValue({ id: 2, email: "existe@dev.com" });
+        ).mockResolvedValue({ id: 2, email: "exists@dev.com" });
 
         await expect(
             register({
-                email: "existe@dev.com",
+                email: "exists@dev.com",
                 password: "password123"
             })
         ).rejects.toThrow("User already exists");
