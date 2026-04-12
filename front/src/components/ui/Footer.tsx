@@ -4,20 +4,20 @@ const links = {
     Plataforma: [
         { label: "Descubrí", href: "/discover" },
         { label: "Concierge", href: "/concierge" },
-        { label: "Historial", href: "/history" },
+        { label: "Historial", href: "/history" }
     ],
     Legal: [
         { label: "Política de Privacidad", href: "#" },
-        { label: "Términos de Servicio", href: "#" },
+        { label: "Términos de Servicio", href: "#" }
     ],
     Soporte: [
         { label: "Centro de Ayuda", href: "#" },
-        { label: "Accesibilidad", href: "#" },
+        { label: "Accesibilidad", href: "#" }
     ],
     Redes: [
         { label: "Instagram", href: "#" },
-        { label: "Editorial", href: "#" },
-    ],
+        { label: "Editorial", href: "#" }
+    ]
 };
 
 export function Footer() {
@@ -31,7 +31,8 @@ export function Footer() {
                     </span>
                     <p className="font-body text-sm text-on-surface-variant leading-relaxed">
                         Un ecosistema premium de entradas diseñado para el
-                        connoisseur cultural moderno. Calidad antes que cantidad.
+                        connoisseur cultural moderno. Calidad antes que
+                        cantidad.
                     </p>
                 </div>
 

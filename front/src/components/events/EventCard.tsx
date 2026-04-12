@@ -24,7 +24,7 @@ export function EventCard({
     dateYear,
     title,
     venue,
-    price,
+    price
 }: EventCardProps) {
     return (
         <div className="group flex flex-col space-y-4">

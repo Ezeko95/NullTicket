@@ -3,7 +3,14 @@
 import { useState } from "react";
 import { EventCard } from "@/components/events/EventCard";
 
-const categories = ["Todos", "Música", "Arte", "Deportes", "Tecnología", "Cine"];
+const categories = [
+    "Todos",
+    "Música",
+    "Arte",
+    "Deportes",
+    "Tecnología",
+    "Cine"
+];
 
 const events = [
     {
@@ -16,7 +23,7 @@ const events = [
         dateYear: "2025",
         title: "Ecos Sintetizados: Noches en Berlín",
         venue: "Templehof Hangar 4, Berlín",
-        price: "$124.00",
+        price: "$124.00"
     },
     {
         id: "2",
@@ -28,19 +35,20 @@ const events = [
         dateYear: "2025",
         title: "La Retrospectiva Cinética",
         venue: "MoMA Manhattan, NY",
-        price: "$45.00",
+        price: "$45.00"
     },
     {
         id: "3",
         category: "Tecnología",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBZRiwWoJTiZtg70BzYxP6U2cjgHfSC0rmcUfUdKBbEzGK5RB-vcUL-dCwfEKMoEUdkvYMe2jPgGeOTUB8VA9OWTPQvyFwnd-dqHaAEdQNvkltIvE_F68_lDOegslBkzaDfCu2LV2UQ4bJzLUk1C68mGYK_IW639gf3MEuJiuoCOvklw70Of5djBk_oXRTnTf0Yb2r2J81hHUOfCV86CFMNiq6IL6eBcST3v1ypLMjMI-zuOsZoVMB4VAzKdB60v2AuA_okAouc9-Uf",
-        imageAlt: "auditorio tecnológico futurista con proyecciones holográficas",
+        imageAlt:
+            "auditorio tecnológico futurista con proyecciones holográficas",
         dateDay: "15",
         dateMonth: "NOV",
         dateYear: "2025",
         title: "El Algoritmo como Arquitectura",
         venue: "The Silicon Pavilion, SF",
-        price: "$299.00",
+        price: "$299.00"
     },
     {
         id: "4",
@@ -52,7 +60,7 @@ const events = [
         dateYear: "2025",
         title: "Residencia Blue Note",
         venue: "Greenwich Village, NYC",
-        price: "$88.00",
+        price: "$88.00"
     },
     {
         id: "5",
@@ -64,7 +72,7 @@ const events = [
         dateYear: "2025",
         title: "Final Grand Slam Masters",
         venue: "Arena O2, Londres",
-        price: "$175.00",
+        price: "$175.00"
     },
     {
         id: "6",
@@ -76,8 +84,8 @@ const events = [
         dateYear: "2026",
         title: "Cumbre de Ética en IA",
         venue: "Palais des Festivals, Cannes",
-        price: "$450.00",
-    },
+        price: "$450.00"
+    }
 ];
 
 export default function DiscoverPage() {

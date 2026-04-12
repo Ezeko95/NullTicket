@@ -7,7 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 const navLinks = [
     { href: "/discover", label: "Descubrí" },
     { href: "/history", label: "Historial" },
-    { href: "/concierge", label: "Concierge" },
+    { href: "/concierge", label: "Concierge" }
 ];
 
 export function TopAppBar() {

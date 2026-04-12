@@ -14,9 +14,15 @@ const parseQty = (text: string): number | null => {
 };
 
 const consultasPrevias = [
-    { label: "Jazz Modernista en Buenos Aires", sub: "Buscando salas íntimas..." },
-    { label: "Bienales de Arte y Diseño", sub: "Encontró 3 coincidencias en Berlín" },
-    { label: "La Experiencia Orquestal", sub: "Reserva confirmada en el Colón" },
+    {
+        label: "Jazz Modernista en Buenos Aires",
+        sub: "Buscando salas íntimas..."
+    },
+    {
+        label: "Bienales de Arte y Diseño",
+        sub: "Encontró 3 coincidencias en Berlín"
+    },
+    { label: "La Experiencia Orquestal", sub: "Reserva confirmada en el Colón" }
 ];
 
 export default function ConciergePage() {
@@ -24,8 +30,8 @@ export default function ConciergePage() {
     const [messages, setMessages] = useState<Message[]>([
         {
             role: "ai",
-            text: "Soy tu Concierge Editorial, curando en tiempo real. Contame qué tipo de experiencia estás buscando — una ciudad específica, un estado de ánimo o un género cultural — y voy a seleccionar las mejores opciones disponibles para vos.",
-        },
+            text: "Soy tu Concierge Editorial, curando en tiempo real. Contame qué tipo de experiencia estás buscando — una ciudad específica, un estado de ánimo o un género cultural — y voy a seleccionar las mejores opciones disponibles para vos."
+        }
     ]);
     const [input, setInput] = useState("");
     const [isTyping, setIsTyping] = useState(false);
@@ -52,16 +58,16 @@ export default function ConciergePage() {
                         role: "ai",
                         text: result.success
                             ? `Una elección sofisticada. Aseguré ${qty} entrada${qty !== 1 ? "s" : ""} para vos. ${result.message}`
-                            : `Lamentablemente hubo un inconveniente: ${result.message}. ¿Querés que explore alternativas?`,
-                    },
+                            : `Lamentablemente hubo un inconveniente: ${result.message}. ¿Querés que explore alternativas?`
+                    }
                 ]);
             } else {
                 setMessages((prev) => [
                     ...prev,
                     {
                         role: "ai",
-                        text: "Una consulta refinada. Para este fin de semana, curé tres experiencias que redefinen la intersección entre cultura y artesanía. Estas son las invitaciones más relevantes disponibles ahora mismo.",
-                    },
+                        text: "Una consulta refinada. Para este fin de semana, curé tres experiencias que redefinen la intersección entre cultura y artesanía. Estas son las invitaciones más relevantes disponibles ahora mismo."
+                    }
                 ]);
             }
         }, 1400);
@@ -152,7 +158,9 @@ export default function ConciergePage() {
                                     <span
                                         key={i}
                                         className="w-2 h-2 rounded-full bg-on-surface-variant animate-bounce"
-                                        style={{ animationDelay: `${i * 150}ms` }}
+                                        style={{
+                                            animationDelay: `${i * 150}ms`
+                                        }}
                                     />
                                 ))}
                             </div>
@@ -167,12 +175,18 @@ export default function ConciergePage() {
                     className="px-8 py-5 border-t border-outline-variant/10"
                 >
                     <div className="flex items-center gap-3 bg-surface-container-low rounded-2xl px-5 py-3">
-                        <button type="button" className="text-on-surface-variant hover:text-primary transition-colors">
+                        <button
+                            type="button"
+                            className="text-on-surface-variant hover:text-primary transition-colors"
+                        >
                             <span className="material-symbols-outlined text-[22px]">
                                 attach_file
                             </span>
                         </button>
-                        <button type="button" className="text-on-surface-variant hover:text-primary transition-colors">
+                        <button
+                            type="button"
+                            className="text-on-surface-variant hover:text-primary transition-colors"
+                        >
                             <span className="material-symbols-outlined text-[22px]">
                                 mic
                             </span>

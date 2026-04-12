@@ -4,30 +4,30 @@ import Link from "next/link";
 const featuredSide = [
     {
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCNI3ysnhIHR5rs3GrOE31BJHHZ4aPg6F17guehI9mb8qV2QmxpnLA2lICdsy0Ig12sopHkxVCgmmRzBgYP2H7EfSVYoQkvlzUqCUKpmm2odPp4dtmaMk5T3px4OqmDcs1ifOEjMX1ol1Q-sLskfWjPYlYJa0JvLH_tOxTWzDOVD2PXYnyJWBK0EJmDQM0pxoUpJU0DamGjoIs7jOKyM9N5yDiXfYT_LnPa7nR0JwWzK1KLB_SaKTbzOvMVCiuHUEQ-K3_jCYABqsHX",
-        title: "Serie Orquesta Skyline",
+        title: "Serie Orquesta Skyline"
     },
     {
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBlOi45aGeCNhvhNa1bpvRl0MjWh-L345EeEmxnRYgv7xDKTEuFXnwy68a9PzZ3FGPR4Ffd1mDiwC4oS0zdiAQDtrzZsPBgEhxA0MtFig0SpL98Swoe7RXq-qVNigU3KNGnQIEeoJhcLDougFsPoIwhyXIUKbaSTyTg59DpXvnattgo3vZcnch7Fx2RsQny30Zka1stHb5wrsC8Ny2AiKgRNoh39w_jKQblNkovOcewUfMP_sbTgfRHpozyvYya4TY_fsuaCNz80RMv",
-        title: "Cumbre de Gastronomía Experimental",
-    },
+        title: "Cumbre de Gastronomía Experimental"
+    }
 ];
 
 const comoFunciona = [
     {
         n: "01",
         title: "Proceso de Selección Élite",
-        desc: "Cada organizador debe superar una revisión de 40 puntos antes de que su evento sea considerado para la plataforma.",
+        desc: "Cada organizador debe superar una revisión de 40 puntos antes de que su evento sea considerado para la plataforma."
     },
     {
         n: "02",
         title: "Concierge Sin Fricciones",
-        desc: "Nuestro sistema de reserva con un clic gestiona traslados, preferencias de asiento y requerimientos especiales de forma automática.",
+        desc: "Nuestro sistema de reserva con un clic gestiona traslados, preferencias de asiento y requerimientos especiales de forma automática."
     },
     {
         n: "03",
         title: "Entradas de Identidad Digital",
-        desc: "Activos digitales encriptados que funcionan como tu llave maestra al evento, incluido contenido exclusivo post-evento.",
-    },
+        desc: "Activos digitales encriptados que funcionan como tu llave maestra al evento, incluido contenido exclusivo post-evento."
+    }
 ];
 
 export default function LandingPage() {
@@ -47,8 +47,8 @@ export default function LandingPage() {
                         </h1>
                         <p className="text-xl md:text-2xl text-on-surface-variant max-w-xl mb-12 font-medium leading-relaxed font-body">
                             Accedé a una selección curada de los momentos
-                            culturales más significativos del mundo, simplificada
-                            para el asistente exigente.
+                            culturales más significativos del mundo,
+                            simplificada para el asistente exigente.
                         </p>
                         <div className="flex flex-wrap gap-4">
                             <Link

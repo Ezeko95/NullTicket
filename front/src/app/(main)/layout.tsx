@@ -7,9 +7,7 @@ export default function MainLayout({
     return (
         <>
             <TopAppBar />
-            <main className="pt-24 min-h-screen">
-                {children}
-            </main>
+            <main className="pt-24 min-h-screen">{children}</main>
             <Footer />
         </>
     );
