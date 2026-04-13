@@ -93,6 +93,7 @@ export default function HistoryPage() {
                                     src={ticket.image}
                                     alt={ticket.title}
                                     fill
+                                    sizes="(max-width: 768px) 100vw, 160px"
                                     className="object-cover"
                                 />
                             </div>
@@ -157,6 +158,7 @@ export default function HistoryPage() {
                                     src={ticket.image}
                                     alt={ticket.title}
                                     fill
+                                    sizes="56px"
                                     className="object-cover"
                                 />
                             </div>

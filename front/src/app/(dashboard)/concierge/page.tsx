@@ -1,17 +1,11 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useTickets } from "@/context/TicketContext";
 
 interface Message {
     role: "user" | "ai";
     text: string;
 }
-
-const parseQty = (text: string): number | null => {
-    const m = text.match(/\d+/);
-    return m ? parseInt(m[0], 10) : null;
-};
 
 const consultasPrevias = [
     {
@@ -25,52 +19,61 @@ const consultasPrevias = [
     { label: "La Experiencia Orquestal", sub: "Reserva confirmada en el Colón" }
 ];
 
+const INITIAL_MESSAGE: Message = {
+    role: "ai",
+    text: "Soy tu Concierge Editorial, curando en tiempo real. Contame qué tipo de experiencia estás buscando — una ciudad específica, un estado de ánimo o un género cultural — y voy a seleccionar las mejores opciones disponibles para vos."
+};
+
 export default function ConciergePage() {
-    const { comprarTickets } = useTickets();
-    const [messages, setMessages] = useState<Message[]>([
-        {
-            role: "ai",
-            text: "Soy tu Concierge Editorial, curando en tiempo real. Contame qué tipo de experiencia estás buscando — una ciudad específica, un estado de ánimo o un género cultural — y voy a seleccionar las mejores opciones disponibles para vos."
-        }
-    ]);
+    const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
     const [input, setInput] = useState("");
     const [isTyping, setIsTyping] = useState(false);
     const bottomRef = useRef<HTMLDivElement>(null);
 
-    const handleSend = (e?: React.FormEvent) => {
+    const handleSend = async (e?: React.FormEvent) => {
         e?.preventDefault();
         const text = input.trim();
         if (!text || isTyping) return;
 
-        setMessages((prev) => [...prev, { role: "user", text }]);
+        const userMessage: Message = { role: "user", text };
+        const updatedMessages = [...messages, userMessage];
+
+        setMessages(updatedMessages);
         setInput("");
         setIsTyping(true);
 
-        setTimeout(() => {
-            setIsTyping(false);
-            const qty = parseQty(text.toLowerCase());
+        try {
+            const res = await fetch("/api/concierge", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    messages: updatedMessages,
+                    input: text
+                })
+            });
 
-            if (qty) {
-                const result = comprarTickets(qty);
-                setMessages((prev) => [
-                    ...prev,
-                    {
-                        role: "ai",
-                        text: result.success
-                            ? `Una elección sofisticada. Aseguré ${qty} entrada${qty !== 1 ? "s" : ""} para vos. ${result.message}`
-                            : `Lamentablemente hubo un inconveniente: ${result.message}. ¿Querés que explore alternativas?`
-                    }
-                ]);
-            } else {
-                setMessages((prev) => [
-                    ...prev,
-                    {
-                        role: "ai",
-                        text: "Una consulta refinada. Para este fin de semana, curé tres experiencias que redefinen la intersección entre cultura y artesanía. Estas son las invitaciones más relevantes disponibles ahora mismo."
-                    }
-                ]);
-            }
-        }, 1400);
+            const data = await res.json();
+
+            setMessages((prev) => [
+                ...prev,
+                {
+                    role: "ai",
+                    text: res.ok
+                        ? data.text
+                        : (data.error ?? "Ocurrió un error inesperado.")
+                }
+            ]);
+        } catch {
+            setMessages((prev) => [
+                ...prev,
+                {
+                    role: "ai",
+                    text: "No se pudo conectar con el servicio. Intentá de nuevo en unos momentos."
+                }
+            ]);
+        } finally {
+            setIsTyping(false);
+        }
     };
 
     useEffect(() => {
@@ -112,7 +115,7 @@ export default function ConciergePage() {
 
             {/* ── Chat ── */}
             <div className="flex flex-col flex-1 min-w-0">
-                {/* Encabezado del chat */}
+                {/* Encabezado */}
                 <div className="flex items-center justify-between px-8 py-5 border-b border-outline-variant/10">
                     <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-full editorial-gradient flex items-center justify-center">
@@ -140,7 +143,7 @@ export default function ConciergePage() {
                             className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                         >
                             <div
-                                className={`max-w-[70%] px-6 py-4 rounded-2xl font-body text-base leading-relaxed ${
+                                className={`max-w-[70%] px-6 py-4 rounded-2xl font-body text-base leading-relaxed whitespace-pre-wrap ${
                                     msg.role === "user"
                                         ? "editorial-gradient text-on-primary rounded-br-sm"
                                         : "bg-surface-container-lowest shadow-ambient text-on-surface rounded-tl-sm"
@@ -175,22 +178,6 @@ export default function ConciergePage() {
                     className="px-8 py-5 border-t border-outline-variant/10"
                 >
                     <div className="flex items-center gap-3 bg-surface-container-low rounded-2xl px-5 py-3">
-                        <button
-                            type="button"
-                            className="text-on-surface-variant hover:text-primary transition-colors"
-                        >
-                            <span className="material-symbols-outlined text-[22px]">
-                                attach_file
-                            </span>
-                        </button>
-                        <button
-                            type="button"
-                            className="text-on-surface-variant hover:text-primary transition-colors"
-                        >
-                            <span className="material-symbols-outlined text-[22px]">
-                                mic
-                            </span>
-                        </button>
                         <input
                             type="text"
                             value={input}
@@ -204,7 +191,7 @@ export default function ConciergePage() {
                             disabled={!input.trim() || isTyping}
                             className="editorial-gradient text-on-primary px-5 py-2 rounded-xl font-headline font-bold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-opacity flex items-center gap-2 shrink-0"
                         >
-                            Enviar Consulta
+                            Enviar
                             <span className="material-symbols-outlined text-[16px]">
                                 arrow_forward
                             </span>
