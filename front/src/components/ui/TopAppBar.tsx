@@ -10,7 +10,11 @@ const navLinks = [
     { href: "/concierge", label: "Concierge" }
 ];
 
-export function TopAppBar() {
+interface TopAppBarProps {
+    variant?: "marketing" | "dashboard";
+}
+
+export function TopAppBar({ variant = "dashboard" }: TopAppBarProps) {
     const pathname = usePathname();
     const { user, logout } = useAuth();
 
@@ -26,38 +30,42 @@ export function TopAppBar() {
                         NullTicket
                     </Link>
 
-                    <div className="hidden md:flex gap-8 items-center font-headline font-bold tracking-tight">
-                        {navLinks.map(({ href, label }) => {
-                            const active = pathname.startsWith(href);
-                            return (
-                                <Link
-                                    key={href}
-                                    href={href}
-                                    className={
-                                        active
-                                            ? "text-primary border-b-2 border-primary pb-1"
-                                            : "text-on-surface-variant hover:text-primary transition-colors"
-                                    }
-                                >
-                                    {label}
-                                </Link>
-                            );
-                        })}
-                    </div>
+                    {variant === "dashboard" && (
+                        <div className="hidden md:flex gap-8 items-center font-headline font-bold tracking-tight">
+                            {navLinks.map(({ href, label }) => {
+                                const active = pathname.startsWith(href);
+                                return (
+                                    <Link
+                                        key={href}
+                                        href={href}
+                                        className={
+                                            active
+                                                ? "text-primary border-b-2 border-primary pb-1"
+                                                : "text-on-surface-variant hover:text-primary transition-colors"
+                                        }
+                                    >
+                                        {label}
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    )}
                 </div>
 
-                {/* Búsqueda + Auth */}
+                {/* Acciones */}
                 <div className="flex items-center gap-6">
-                    <div className="hidden lg:flex items-center bg-surface-container-low rounded-full px-4 py-2 gap-2">
-                        <span className="material-symbols-outlined text-on-surface-variant text-[20px]">
-                            search
-                        </span>
-                        <input
-                            type="text"
-                            placeholder="Buscá una experiencia..."
-                            className="bg-transparent border-none outline-none text-sm w-48 placeholder:text-on-surface-variant font-body"
-                        />
-                    </div>
+                    {variant === "dashboard" && (
+                        <div className="hidden lg:flex items-center bg-surface-container-low rounded-full px-4 py-2 gap-2">
+                            <span className="material-symbols-outlined text-on-surface-variant text-[20px]">
+                                search
+                            </span>
+                            <input
+                                type="text"
+                                placeholder="Buscá una experiencia..."
+                                className="bg-transparent border-none outline-none text-sm w-48 placeholder:text-on-surface-variant font-body"
+                            />
+                        </div>
+                    )}
 
                     {user ? (
                         <div className="flex items-center gap-3">
@@ -72,12 +80,20 @@ export function TopAppBar() {
                             </button>
                         </div>
                     ) : (
-                        <Link
-                            href="/login"
-                            className="editorial-gradient text-on-primary px-6 py-2.5 rounded-xl font-headline font-bold text-sm tracking-tight hover:opacity-80 transition-opacity"
-                        >
-                            Ingresá
-                        </Link>
+                        <div className="flex items-center gap-3">
+                            <Link
+                                href="/login"
+                                className="text-sm font-bold text-on-surface-variant hover:text-primary transition-colors font-headline"
+                            >
+                                Ingresá
+                            </Link>
+                            <Link
+                                href="/register"
+                                className="editorial-gradient text-on-primary px-6 py-2.5 rounded-xl font-headline font-bold text-sm tracking-tight hover:opacity-80 transition-opacity"
+                            >
+                                Registrate
+                            </Link>
+                        </div>
                     )}
                 </div>
             </nav>

@@ -10,12 +10,14 @@
         "lint:fix": "eslint . --fix --no-error-on-unmatched-pattern"
     },
     "dependencies": {
+        "@google/genai": "^1.49.0",
         "@repo/types": "workspace:*",
         "next": "16.2.3",
         "react": "19.2.4",
         "react-dom": "19.2.4"
     },
     "devDependencies": {
+        "@faker-js/faker": "^10.4.0",
         "@tailwindcss/postcss": "^4",
         "@types/node": "^20",
         "@types/react": "^19",

@@ -68,17 +68,18 @@ export default function LandingPage() {
 
                     {/* Imagen hero */}
                     <div className="col-span-12 lg:col-span-5 relative">
-                        <div className="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-float relative">
+                        <div className="aspect-4/5 rounded-4xl overflow-hidden shadow-float relative">
                             <Image
                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfL_iXOpPOtrv7p_Z_O-GurPdeURfzGK9hcXg9YabguTYAueZQGF63H0Ddp3JZBjbn9w1p5ISIJdrbBPWIQ5WGgMcwp2iyWIlo_nd10WmvioWskA793KItlhbujI0sKzvMuOuRv0upPs8zhdkPsXmThnWKF7FJKej99v5wnS1q-eDMQ5M-MG5X2zYqZl5CFb7bp8PkqTYhZw9rdVtRC2W9v5Gjc0mm-GBRgI34njCAS6gqt7n4TvHcApPVGm6EX6lwkggGUvMUAvO4"
                                 alt="iluminación dramática en sala de lujo"
                                 fill
+                                sizes="(max-width: 1024px) 100vw, 42vw"
                                 className="object-cover"
                                 priority
                             />
                         </div>
                         {/* Tarjeta flotante */}
-                        <div className="absolute -bottom-6 -left-6 bg-surface-container-lowest/80 backdrop-blur-md p-8 rounded-2xl shadow-float border-ghost max-w-[240px]">
+                        <div className="absolute -bottom-6 -left-6 bg-surface-container-lowest/80 backdrop-blur-md p-8 rounded-2xl shadow-float border-ghost max-w-60">
                             <p className="text-xs uppercase tracking-widest text-on-surface-variant font-bold mb-2 font-label">
                                 Próximo Evento Destacado
                             </p>
@@ -114,16 +115,17 @@ export default function LandingPage() {
                     </div>
 
                     {/* Bento grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:h-[800px]">
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:h-200">
                         {/* Tarjeta principal */}
                         <div className="md:col-span-8 group relative overflow-hidden rounded-[2.5rem] bg-surface-container-lowest">
                             <Image
                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuAV1PoGDO0_6J3W7I5AmF7SU7cm2npkuE69CfWNA_BxN0U0qWJQlYsK5J9uT9b5vBwEqUpDBFaqibKzPUp8bI91mzrfHRvHafcxlxFeCUQYhb5cHPEUw-zHHHYq_X5floAEqRyAlorgeOzHUULQk8qmxErsOpAdg4OMOd0_VBqjOiQ7hTEjZ3AdyhImgXrrkUNgLtNpzOn0Dn_CyNqpVmGEajCWh4opqo0WAmHsV6_WMYKdwCnD4RfZ4jhHHLZxWMddSN0f-rICsWW2"
                                 alt="instalación de arte digital vibrante"
                                 fill
+                                sizes="(max-width: 768px) 100vw, 66vw"
                                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent" />
+                            <div className="absolute inset-0 bg-linear-to-t from-primary/80 via-transparent to-transparent" />
                             <div className="absolute bottom-0 left-0 p-12 w-full">
                                 <div className="flex items-center gap-4 mb-4">
                                     <span className="bg-surface-container-lowest/20 backdrop-blur px-4 py-1 rounded-full text-white text-sm font-medium font-body">
@@ -155,6 +157,7 @@ export default function LandingPage() {
                                         src={image}
                                         alt={title}
                                         fill
+                                        sizes="(max-width: 768px) 100vw, 33vw"
                                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                                     />
                                     <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors" />
@@ -183,7 +186,7 @@ export default function LandingPage() {
                             estándares de producción e impacto cultural.
                         </p>
                         <div className="flex items-center gap-4 text-primary font-black font-headline">
-                            <span className="w-12 h-[2px] bg-primary" />
+                            <span className="w-12 h-0.5 bg-primary" />
                             NUESTRA PROMESA
                         </div>
                     </div>
@@ -215,7 +218,7 @@ export default function LandingPage() {
             <section className="max-w-screen-2xl mx-auto px-8 mb-32">
                 <div className="bg-primary-container rounded-[3rem] p-16 md:p-24 text-center relative overflow-hidden">
                     <div className="absolute inset-0 opacity-10 pointer-events-none">
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#e0e0fa,_transparent)] scale-150" />
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#e0e0fa,transparent)] scale-150" />
                     </div>
                     <div className="relative z-10 max-w-2xl mx-auto">
                         <h2 className="text-on-primary text-5xl md:text-6xl font-black mb-8 leading-tight tracking-tighter font-headline">
