@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { LoginResponse, LoginRequest } from "@repo/types";
-import { LoginUser } from "../models/auth/user";
+import { LoginUser } from "../models/auth/user.ts";
 
 export function loginController(req: Request, res: Response) {
     const { email, password } = req.body as LoginRequest;

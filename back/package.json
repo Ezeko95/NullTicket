@@ -11,7 +11,8 @@
     },
     "dependencies": {
         "@repo/types": "workspace:*",
-        "express": "latest"
+        "express": "latest",
+        "typeorm": "^0.3.28"
     },
     "devDependencies": {
         "@types/express": "latest",
