@@ -1,5 +1,7 @@
+import { IUser } from "./user.ts";
+
 export interface AuthUser {
-    id: string;
+    id: number;
     name: string;
     email: string;
 }
@@ -11,5 +13,5 @@ export interface LoginRequest {
 
 export interface LoginResponse {
     token: string;
-    user: AuthUser;
+    user: IUser;
 }

@@ -1,14 +1,27 @@
 import { Request, Response } from "express";
-import { LoginResponse, LoginRequest } from "@repo/types";
-import { LoginUser } from "../models/auth/user.ts";
+import { LoginResponse, LoginRequest, ErrorsNumber } from "@repo/types";
+import loginService from "../services/login/login.service.ts";
 
-export function loginController(req: Request, res: Response) {
+export async function loginController(req: Request, res: Response) {
     const { email, password } = req.body as LoginRequest;
 
-    const user = new LoginUser({ email: "", id: "", name: "" });
-    const token = "";
-    res.status(200).json({
-        token: token,
-        user: user
-    } as LoginResponse);
+    const [token, user] = await loginService.login(email, password);
+
+    if (token && user)
+        return res.status(200).json({
+            token,
+            user
+        } as LoginResponse);
+
+    if (!token && user)
+        return res.status(401).json({
+            message: "passwords must be equal",
+            errorNumber: ErrorsNumber.PasswordError
+        });
+
+    if (!user)
+        return res.status(401).json({
+            message: "user not found",
+            errorNumber: ErrorsNumber.UserNotFound
+        });
 }
