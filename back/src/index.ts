@@ -1,5 +1,5 @@
 import express from "express";
-import { initializeDB } from "./dataSource.ts";
+import { initializeDB } from "./dataSource.js";
 import { signInController } from "./controllers/authController.js";
 import { initializeDatabase } from "./models/database.js";
 
