@@ -9,3 +9,7 @@ Facu - Sign in endpoint + husky + formatting in general
 
 12/4
 Gian - Events catalog screen (Route Handler + Server Component, mock data, availability states)
+
+13/4
+Fran - endpoint para login, enum de codigo de errores, tipado de interfaz de usuario, jwt para el token, bcrypt
+para las contraseñas. TypeORM con sqlite configurado

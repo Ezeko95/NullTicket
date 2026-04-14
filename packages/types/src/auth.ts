@@ -1,8 +1,10 @@
-export type AuthUser = {
-    id: string;
+import { IUser } from "./user.js";
+
+export interface AuthUser {
+    id: number;
     name: string;
     email: string;
-};
+}
 
 export type SignInRequest = {
     email: string;
@@ -15,5 +17,5 @@ export type LoginRequest = SignInRequest;
 
 export type LoginResponse = {
     token: string;
-    user: AuthUser;
+    user: IUser;
 };
