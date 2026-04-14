@@ -17,6 +17,9 @@
         "jsonwebtoken": "^9.0.3",
         "sqlite3": "^5.0.3",
         "typeorm": "^0.3.28"
+        "bcryptjs": "^3.0.3",
+        "express": "latest",
+        "sql.js": "^1.14.1"
     },
     "devDependencies": {
         "@types/bcrypt": "^6.0.0",
@@ -24,6 +27,7 @@
         "@types/express": "latest",
         "@types/jsonwebtoken": "^9.0.10",
         "@types/node": "latest",
+        "@types/sql.js": "^1.4.11",
         "tsx": "latest",
         "typescript": "latest"
     }

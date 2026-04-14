@@ -1,4 +1,4 @@
-export interface HealthResponse {
+export type HealthResponse = {
     ok: boolean;
     service: string;
-}
+};
