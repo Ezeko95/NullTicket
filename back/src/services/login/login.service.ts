@@ -1,4 +1,4 @@
-import userService from "../user/user.service.ts";
+import userService from "../user/user.service.js";
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 
