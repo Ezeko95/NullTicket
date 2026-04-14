@@ -1,10 +1,11 @@
 packages:
-  - "back"
-  - "front"
-  - "packages/*"
+    - "back"
+    - "front"
+    - "packages/*"
 allowBuilds:
-  bcrypt: false
-  esbuild: false
-  sharp: false
-  sqlite3: false
-  unrs-resolver: false
+    bcrypt: false
+    esbuild: false
+    protobufjs: false
+    sharp: false
+    sqlite3: false
+    unrs-resolver: false

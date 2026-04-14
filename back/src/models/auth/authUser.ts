@@ -1,7 +1,7 @@
 import { AuthUser } from "@repo/types";
 
 export class LoginUser implements AuthUser {
-    id: string;
+    id: number;
     name: string;
     email: string;
 

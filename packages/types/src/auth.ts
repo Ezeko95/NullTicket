@@ -4,7 +4,7 @@ export interface AuthUser {
     id: number;
     name: string;
     email: string;
-};
+}
 
 export type SignInRequest = {
     email: string;
@@ -18,4 +18,4 @@ export type LoginRequest = SignInRequest;
 export type LoginResponse = {
     token: string;
     user: IUser;
-}
+};

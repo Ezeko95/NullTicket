@@ -1,6 +1,5 @@
-import { AuthUser } from "@repo/types";
 import userService from "../user/user.service.ts";
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 
 class LoginService {
