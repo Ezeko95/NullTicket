@@ -11,16 +11,15 @@
     },
     "dependencies": {
         "@repo/types": "workspace:*",
+        "bcryptjs": "^3.0.3",
         "better-sqlite3": "^12.9.0",
         "express": "latest",
         "jsonwebtoken": "^9.0.3",
+        "sql.js": "^1.14.1",
         "sqlite3": "^5.0.3",
-        "typeorm": "^0.3.28",
-        "bcryptjs": "^3.0.3",
-        "sql.js": "^1.14.1"
+        "typeorm": "^0.3.28"
     },
     "devDependencies": {
-        "@types/bcrypt": "^6.0.0",
         "@types/better-sqlite3": "^7.6.13",
         "@types/express": "latest",
         "@types/jsonwebtoken": "^9.0.10",
