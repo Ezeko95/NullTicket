@@ -1,4 +1,4 @@
-import { IUser } from "./user.ts";
+import { IUser } from "./user.js";
 
 export interface AuthUser {
     id: number;

@@ -9,11 +9,9 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "allowImportingTsExtensions": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "strictPropertyInitialization": false,
-        "noEmit": true
+        "strictPropertyInitialization": false
     },
     "include": ["src/**/*.ts"]
 }

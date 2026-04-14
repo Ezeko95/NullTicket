@@ -1,6 +1,6 @@
 import { In } from "typeorm";
-import { AppDataSource } from "../../dataSource.ts";
-import { User } from "../../models/user/user.ts";
+import { AppDataSource } from "../../dataSource.js";
+import { User } from "../../models/user/user.js";
 
 class UserService {
     private readonly repository = AppDataSource.getRepository(User);

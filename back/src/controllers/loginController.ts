@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { LoginResponse, LoginRequest, ErrorsNumber } from "@repo/types";
-import loginService from "../services/login/login.service.ts";
+import loginService from "../services/login/login.service.js";
 
 export async function loginController(req: Request, res: Response) {
     const { email, password } = req.body as LoginRequest;
