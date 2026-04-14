@@ -12,7 +12,8 @@
         "allowImportingTsExtensions": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "strictPropertyInitialization": false
+        "strictPropertyInitialization": false,
+        "noEmit": true
     },
     "include": ["src/**/*.ts"]
 }
