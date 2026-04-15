@@ -1,4 +1,4 @@
-import type { SignInRequest } from "@repo/types";
+import type { RegisterRequest } from "@repo/types";
 import bcrypt from "bcryptjs";
 import { HttpError } from "../common/HttpError.js";
 import { createUser, findUserByEmail, type User } from "../models/User.js";
@@ -11,7 +11,7 @@ type SafeUser = {
     createdAt: string;
 };
 
-type SignInResult = {
+type RegisterResult = {
     created: boolean;
     user: SafeUser;
 };
@@ -22,10 +22,10 @@ const toSafeUser = (user: User): SafeUser => ({
     createdAt: user.createdAt
 });
 
-export const signIn = async ({
+export const register = async ({
     email,
     password
-}: SignInRequest): Promise<SignInResult> => {
+}: RegisterRequest): Promise<RegisterResult> => {
     const passwordHash = await bcrypt.hash(password, saltRounds);
     let user: User;
 
