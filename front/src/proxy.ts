@@ -5,7 +5,7 @@ import type { NextRequest } from "next/server";
 // Update this constant when the backend team confirms the name.
 const SESSION_COOKIE = "token";
 
-const PUBLIC_PATHS = ["/login"];
+const PUBLIC_PATHS = ["/", "/login", "/register"];
 
 export function proxy(request: NextRequest) {
     if (process.env.DISABLE_AUTH === "true") return;

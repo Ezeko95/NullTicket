@@ -1,10 +1,12 @@
 import express from "express";
 import { registerController } from "./controllers/authController.js";
+import { initializeDB } from "./dataSource.js";
 import { initializeDatabase } from "./models/database.js";
 
 const app = express();
 const port = process.env.PORT || 3001;
 
+await initializeDB();
 app.use(express.json());
 
 app.get("/", (_req, res) => {
