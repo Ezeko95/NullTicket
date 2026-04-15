@@ -19,9 +19,8 @@ export async function loginController(req: Request, res: Response) {
             errorNumber: ErrorsNumber.PasswordError
         });
 
-    if (!user)
-        return res.status(401).json({
-            message: "user not found",
-            errorNumber: ErrorsNumber.UserNotFound
-        });
+    return res.status(401).json({
+        message: "user not found",
+        errorNumber: ErrorsNumber.UserNotFound
+    });
 }
