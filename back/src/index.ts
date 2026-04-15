@@ -1,6 +1,7 @@
 import express from "express";
 import { initializeDB } from "./dataSource.js";
 import { signInController } from "./controllers/authController.js";
+import { loginController } from "./controllers/loginController.js";
 import { initializeDatabase } from "./models/database.js";
 
 const app = express();
@@ -17,6 +18,7 @@ app.get("/", (_req, res) => {
 });
 
 app.post("/sign-in", signInController);
+app.post("/login", loginController);
 
 await initializeDatabase();
 
