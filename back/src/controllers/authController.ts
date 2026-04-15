@@ -1,9 +1,9 @@
-import type { SignInRequest } from "@repo/types";
+import type { RegisterRequest } from "@repo/types";
 import type { Request, Response } from "express";
 import { HttpError } from "../common/HttpError.js";
-import { signIn } from "../services/authService.js";
+import { register } from "../services/authService.js";
 
-const hasSignInFields = (body: unknown): body is SignInRequest =>
+const hasRegisterFields = (body: unknown): body is RegisterRequest =>
     typeof body === "object" &&
     body !== null &&
     "email" in body &&
@@ -11,8 +11,8 @@ const hasSignInFields = (body: unknown): body is SignInRequest =>
     typeof body.email === "string" &&
     typeof body.password === "string";
 
-const parseSignInRequest = (body: unknown): SignInRequest => {
-    if (!hasSignInFields(body)) {
+const parseRegisterRequest = (body: unknown): RegisterRequest => {
+    if (!hasRegisterFields(body)) {
         throw new HttpError("Email and password are required.", 400);
     }
 
@@ -28,10 +28,10 @@ const parseSignInRequest = (body: unknown): SignInRequest => {
     };
 };
 
-export const signInController = async (req: Request, res: Response) => {
+export const registerController = async (req: Request, res: Response) => {
     try {
-        const signInRequest = parseSignInRequest(req.body);
-        const result = await signIn(signInRequest);
+        const registerRequest = parseRegisterRequest(req.body);
+        const result = await register(registerRequest);
 
         res.status(result.created ? 201 : 200).json({
             ok: true,

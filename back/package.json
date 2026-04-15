@@ -20,12 +20,14 @@
         "typeorm": "^0.3.28"
     },
     "devDependencies": {
+        "@types/bcryptjs": "^3.0.0",
         "@types/better-sqlite3": "^7.6.13",
         "@types/express": "latest",
         "@types/jsonwebtoken": "^9.0.10",
         "@types/node": "latest",
         "@types/sql.js": "^1.4.11",
         "tsx": "latest",
-        "typescript": "latest"
+        "typescript": "latest",
+        "vitest": "^4.1.4"
     }
 }
