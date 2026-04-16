@@ -1,8 +1,7 @@
 import express from "express";
 import { registerController } from "./controllers/authController.js";
 import { initializeDB } from "./dataSource.js";
-import { loginController } from "./controllers/loginController.js";
-import { initializeDatabase } from "./models/database.js";
+import { loginController } from "./controllers/authController.js";
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -20,8 +19,6 @@ app.get("/", (_req, res) => {
 
 app.post("/login", loginController);
 app.post("/register", registerController);
-
-await initializeDatabase();
 
 app.listen(port, () => {
     console.log(`API running on http://localhost:${port}`);
