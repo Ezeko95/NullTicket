@@ -16,6 +16,7 @@ export default [
     {
         files: [
             "apps/api/**/*.{js,mjs,cjs,ts,tsx}",
+            "back/**/*.{js,mjs,cjs,ts,tsx}",
             "packages/types/**/*.{js,mjs,cjs,ts,tsx}"
         ],
         languageOptions: {
