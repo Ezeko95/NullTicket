@@ -1,7 +1,9 @@
 import type { RegisterRequest } from "@repo/types";
 import bcrypt from "bcryptjs";
+import * as jwt from "jsonwebtoken";
 import { HttpError } from "../common/HttpError.js";
 import { createUser, findUserByEmail, type User } from "../models/User.js";
+import userService from "../repositories/user.js";
 
 const saltRounds = 12;
 
@@ -45,4 +47,24 @@ export const register = async ({
         created: true,
         user: toSafeUser(user)
     };
+};
+
+export const login = async (email: string, password: string) => {
+    const [user] = await userService.findBy({ emails: [email] });
+
+    const canLogin = await bcrypt.compare(password, user.password);
+
+    return canLogin
+        ? ([
+              jwt.sign(
+                  {
+                      id: user.id,
+                      email: user.email,
+                      name: user.name
+                  },
+                  null
+              ),
+              user
+          ] as const)
+        : ([null, null] as const);
 };

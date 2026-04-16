@@ -16,7 +16,6 @@ app.get("/", (_req, res) => {
     });
 });
 
-
 app.post("/login", loginController);
 app.post("/register", registerController);
 

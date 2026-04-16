@@ -1,7 +1,7 @@
 import type { RegisterRequest } from "@repo/types";
 import { LoginResponse, LoginRequest, ErrorsNumber } from "@repo/types";
 import type { Request, Response } from "express";
-import loginService from "../services/login/login.service.js";
+import loginService from "../services/auth.js";
 
 import { HttpError } from "../common/HttpError.js";
 import { register } from "../services/authService.js";
@@ -78,4 +78,3 @@ export async function loginController(req: Request, res: Response) {
         errorNumber: ErrorsNumber.UserNotFound
     });
 }
-
