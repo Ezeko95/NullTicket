@@ -2,6 +2,7 @@ import type { RegisterRequest } from "@repo/types";
 import bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 import { HttpError } from "../common/HttpError.js";
+import { User } from "../models/userModel.js";
 import userRepo from "../repositories/userRepo.js";
 
 const saltRounds = 12;
