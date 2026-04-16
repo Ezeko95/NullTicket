@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { AppDataSource } from "../src/dataSource.js";
 import { Event } from "../src/models/eventModel.js";
+import { Ticket } from "../src/models/ticketModel.js";
 import { User } from "../src/models/userModel.js";
 
 const ROOT = process.cwd();
@@ -80,6 +81,24 @@ for (const row of eventRows) {
     );
 }
 console.log(`Seeded ${eventRows.length} events.`);
+
+const ticketRepo = AppDataSource.getRepository(Ticket);
+const ticketRows = parseCsv(path.join(SEED_DIR, "tickets.csv"));
+for (const row of ticketRows) {
+    await ticketRepo.save(
+        ticketRepo.create({
+            eventId: Number(row.eventId),
+            eventName: row.eventName,
+            eventDate: row.eventDate,
+            sector: row.sector,
+            price: Number(row.price),
+            status: row.status,
+            userId: Number(row.userId),
+            purchasedAt: row.purchasedAt
+        })
+    );
+}
+console.log(`Seeded ${ticketRows.length} tickets.`);
 
 await AppDataSource.destroy();
 console.log("Seeding complete!");
