@@ -1,9 +1,9 @@
-import type { User } from "@repo/types";
+import type { SafeUser } from "@repo/types";
 import type { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import userRepo from "../repositories/userRepo.js";
 
-export type AuthPayload = Omit<User, "password">;
+export type AuthPayload = SafeUser;
 
 export async function authMiddleware(
     req: Request,

@@ -7,3 +7,5 @@ export interface User {
 
     password: string;
 }
+
+export type SafeUser = Pick<User, "id" | "name" | "email">;
