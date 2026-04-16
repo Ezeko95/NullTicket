@@ -1,8 +1,11 @@
 import { DataSource } from "typeorm";
+import { User } from "./models/userModel.js";
 
 export const AppDataSource = new DataSource({
     type: "better-sqlite3",
-    database: "NullTicket"
+    database: "NullTicket",
+    entities: [User],
+    synchronize: true
 });
 
 export async function initializeDB() {
