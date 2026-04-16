@@ -4,7 +4,7 @@ import { initializeDB } from "./dataSource.js";
 import { loginController } from "./controllers/authController.js";
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT ?? "3001";
 
 await initializeDB();
 app.use(express.json());
