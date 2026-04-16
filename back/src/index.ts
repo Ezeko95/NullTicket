@@ -1,5 +1,6 @@
 import express from "express";
 import { registerController } from "./controllers/authController.js";
+import { eventsController } from "./controllers/eventsController.js";
 import { initializeDB } from "./dataSource.js";
 import { initializeDatabase } from "./models/database.js";
 
@@ -17,6 +18,7 @@ app.get("/", (_req, res) => {
 });
 
 app.post("/register", registerController);
+app.get("/events", eventsController);
 
 await initializeDatabase();
 
