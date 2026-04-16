@@ -1,19 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { register } from "../services/authService.js";
-import * as userModel from "../models/User.js";
+import authService from "../services/authService.js";
+import userRepo from "../repositories/userRepo.js";
+import { User } from "../models/userModel.js";
 
-interface UserModelMock {
-    createUser: ReturnType<typeof vi.fn>;
-    findUserByEmail: ReturnType<typeof vi.fn>;
-}
-
-vi.mock(
-    "../models/User.js",
-    (): UserModelMock => ({
-        createUser: vi.fn(),
-        findUserByEmail: vi.fn()
-    })
-);
+vi.mock("../repositories/userRepo.js", () => ({
+    default: {
+        findByEmail: vi.fn(),
+        create: vi.fn()
+    }
+}));
 
 describe("Auth Service - Register Unit Tests", () => {
     beforeEach(() => {
@@ -23,34 +18,32 @@ describe("Auth Service - Register Unit Tests", () => {
     it("should register a user successfully when data is valid", async () => {
         const mockUser = {
             id: 1,
-            email: "new@dev.com",
-            createdAt: new Date().toISOString()
+            email: "new@dev.com"
         };
 
-        (
-            userModel.createUser as unknown as ReturnType<typeof vi.fn>
-        ).mockResolvedValue(mockUser);
+        vi.mocked(userRepo.findByEmail).mockResolvedValue(null);
+        vi.mocked(userRepo.create).mockResolvedValue(mockUser as User);
 
-        const result = await register({
+        const result = await authService.register({
             email: "new@dev.com",
             password: "password123"
         });
 
         expect(result.created).toBe(true);
         expect(result.user.email).toBe("new@dev.com");
-        expect(userModel.createUser).toHaveBeenCalled();
+        expect(userRepo.create).toHaveBeenCalled();
     });
 
     it("should throw a 409 error if user already exists", async () => {
-        (
-            userModel.createUser as unknown as ReturnType<typeof vi.fn>
-        ).mockRejectedValue(new Error("Duplicate"));
-        (
-            userModel.findUserByEmail as unknown as ReturnType<typeof vi.fn>
-        ).mockResolvedValue({ id: 2, email: "exists@dev.com" });
+        vi.mocked(userRepo.findByEmail).mockResolvedValue({
+            id: 2,
+            name: "existing",
+            email: "exists@dev.com",
+            password: "hash"
+        } as User);
 
         await expect(
-            register({
+            authService.register({
                 email: "exists@dev.com",
                 password: "password123"
             })

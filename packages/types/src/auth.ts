@@ -1,6 +1,6 @@
-import { IUser } from "./user.js";
+import { User } from "./user.js";
 
-export type AuthUser = IUser;
+export type AuthUser = User;
 
 export type RegisterRequest = {
     email: string;
@@ -11,5 +11,5 @@ export type LoginRequest = RegisterRequest;
 
 export type LoginResponse = {
     token: string;
-    user: IUser;
+    user: User;
 };

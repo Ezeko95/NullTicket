@@ -1,10 +1,8 @@
 import type { RegisterRequest } from "@repo/types";
 import { LoginResponse, LoginRequest, ErrorsNumber } from "@repo/types";
 import type { Request, Response } from "express";
-import loginService from "../services/auth.js";
-
 import { HttpError } from "../common/HttpError.js";
-import { register } from "../services/authService.js";
+import authService from "../services/authService.js";
 
 const hasRegisterFields = (body: unknown): body is RegisterRequest =>
     typeof body === "object" &&
@@ -34,7 +32,7 @@ const parseRegisterRequest = (body: unknown): RegisterRequest => {
 export const registerController = async (req: Request, res: Response) => {
     try {
         const registerRequest = parseRegisterRequest(req.body);
-        const result = await register(registerRequest);
+        const result = await authService.register(registerRequest);
 
         res.status(result.created ? 201 : 200).json({
             ok: true,
@@ -59,7 +57,7 @@ export const registerController = async (req: Request, res: Response) => {
 export async function loginController(req: Request, res: Response) {
     const { email, password } = req.body as LoginRequest;
 
-    const [token, user] = await loginService.login(email, password);
+    const [token, user] = await authService.login(email, password);
 
     if (token && user)
         return res.status(200).json({
