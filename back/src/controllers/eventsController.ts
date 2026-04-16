@@ -68,3 +68,15 @@ const events: Event[] = [
 export const eventsController = (_req: Request, res: Response) => {
     res.status(200).json(events);
 };
+
+export const eventByIdController = (req: Request, res: Response) => {
+    const id = Number(req.params.eventId);
+    const event = events.find((e) => e.id === id);
+
+    if (!event) {
+        res.status(404).json({ ok: false, error: "Event not found." });
+        return;
+    }
+
+    res.status(200).json(event);
+};
