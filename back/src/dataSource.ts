@@ -1,11 +1,12 @@
 import { DataSource } from "typeorm";
 import { Event } from "./models/eventModel.js";
+import { Ticket } from "./models/ticketModel.js";
 import { User } from "./models/userModel.js";
 
 export const AppDataSource = new DataSource({
     type: "better-sqlite3",
     database: "NullTicket",
-    entities: [User, Event],
+    entities: [User, Event, Ticket],
     synchronize: true
 });
 

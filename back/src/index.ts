@@ -7,6 +7,7 @@ import {
     eventsController,
     eventByIdController
 } from "./controllers/eventsController.js";
+import { getUserTicketsController } from "./controllers/ticketController.js";
 import { initializeDB } from "./dataSource.js";
 
 const app = express();
@@ -26,6 +27,7 @@ app.post("/login", loginController);
 app.post("/register", registerController);
 app.get("/events", eventsController);
 app.get("/events/:eventId", eventByIdController);
+app.get("/me/tickets", getUserTicketsController);
 
 app.listen(port, () => {
     console.log(`API running on http://localhost:${port}`);
