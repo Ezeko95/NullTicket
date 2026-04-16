@@ -1,8 +1,10 @@
 import express from "express";
-import { registerController } from "./controllers/authController.js";
+import {
+    registerController,
+    loginController
+} from "./controllers/authController.js";
 import { eventsController } from "./controllers/eventsController.js";
 import { initializeDB } from "./dataSource.js";
-import { loginController } from "./controllers/authController.js";
 
 const app = express();
 const port = process.env.PORT ?? "3001";
