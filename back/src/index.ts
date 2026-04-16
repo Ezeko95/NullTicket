@@ -1,5 +1,6 @@
 import express from "express";
 import { registerController } from "./controllers/authController.js";
+import { eventsController } from "./controllers/eventsController.js";
 import { initializeDB } from "./dataSource.js";
 import { loginController } from "./controllers/authController.js";
 
@@ -18,6 +19,7 @@ app.get("/", (_req, res) => {
 
 app.post("/login", loginController);
 app.post("/register", registerController);
+app.get("/events", eventsController);
 
 app.listen(port, () => {
     console.log(`API running on http://localhost:${port}`);
