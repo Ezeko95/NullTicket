@@ -7,12 +7,10 @@ export async function authMiddleware(
     res: Response,
     next: NextFunction
 ) {
-    const cookieHeader = req.headers.cookie ?? "";
-    const token = cookieHeader
-        .split(";")
-        .map((c) => c.trim())
-        .find((c) => c.startsWith("token="))
-        ?.split("=")[1];
+    const authHeader = req.headers.authorization ?? "";
+    const token = authHeader.startsWith("Bearer ")
+        ? authHeader.slice(7)
+        : undefined;
 
     if (!token) {
         res.status(401).json({ ok: false, error: "Unauthorized." });
