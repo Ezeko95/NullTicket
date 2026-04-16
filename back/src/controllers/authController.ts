@@ -5,6 +5,7 @@ import {
     ErrorsNumber
 } from "@repo/types";
 import type { Request, Response } from "express";
+import * as jwt from "jsonwebtoken";
 import { HttpError } from "../common/HttpError.js";
 import authService from "../services/authService.js";
 
@@ -44,8 +45,19 @@ export const registerController = async (req: Request, res: Response) => {
         const registerRequest = parseRegisterRequest(req.body);
         const result = await authService.register(registerRequest);
 
+        const token = jwt.sign(
+            {
+                id: result.user.id,
+                email: result.user.email,
+                name: result.user.name
+            },
+            process.env.JWT_SECRET ?? "secret"
+        );
+        res.setHeader("Authorization", `Bearer ${token}`);
+
         res.status(result.created ? 201 : 200).json({
             ok: true,
+            token,
             user: result.user
         });
     } catch (error) {
@@ -70,11 +82,13 @@ export async function loginController(req: Request, res: Response) {
 
         const [token, user] = await authService.login(email, password);
 
-        if (token && user)
+        if (token && user) {
+            res.setHeader("Authorization", `Bearer ${token}`);
             return res.status(200).json({
                 token,
                 user
             } as LoginResponse);
+        }
 
         if (!token && user)
             return res.status(401).json({

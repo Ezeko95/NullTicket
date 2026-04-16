@@ -1,10 +1,10 @@
 import bcrypt from "bcryptjs";
 import fs from "fs";
 import path from "path";
-import { AppDataSource } from "../src/dataSource.js";
-import { Event } from "../src/models/eventModel.js";
-import { Ticket } from "../src/models/ticketModel.js";
-import { User } from "../src/models/userModel.js";
+import { AppDataSource } from "../dist/dataSource.js";
+import { Event } from "../dist/models/eventModel.js";
+import { Ticket } from "../dist/models/ticketModel.js";
+import { User } from "../dist/models/userModel.js";
 
 const ROOT = process.cwd();
 const DB_PATH = path.join(ROOT, "NullTicket");
