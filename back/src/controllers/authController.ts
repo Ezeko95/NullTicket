@@ -1,5 +1,9 @@
-import type { RegisterRequest } from "@repo/types";
-import { LoginResponse, LoginRequest, ErrorsNumber } from "@repo/types";
+import {
+    type RegisterRequest,
+    LoginResponse,
+    LoginRequest,
+    ErrorsNumber
+} from "@repo/types";
 import type { Request, Response } from "express";
 import { HttpError } from "../common/HttpError.js";
 import authService from "../services/authService.js";

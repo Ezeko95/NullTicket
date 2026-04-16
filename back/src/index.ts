@@ -1,8 +1,13 @@
 import express from "express";
-import { registerController } from "./controllers/authController.js";
-import { eventsController } from "./controllers/eventsController.js";
+import {
+    registerController,
+    loginController
+} from "./controllers/authController.js";
+import {
+    eventsController,
+    eventByIdController
+} from "./controllers/eventsController.js";
 import { initializeDB } from "./dataSource.js";
-import { loginController } from "./controllers/authController.js";
 
 const app = express();
 const port = process.env.PORT ?? "3001";
@@ -20,6 +25,7 @@ app.get("/", (_req, res) => {
 app.post("/login", loginController);
 app.post("/register", registerController);
 app.get("/events", eventsController);
+app.get("/events/:eventId", eventByIdController);
 
 app.listen(port, () => {
     console.log(`API running on http://localhost:${port}`);
