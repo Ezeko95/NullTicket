@@ -1,12 +1,19 @@
 "use client";
 
 import { AuthProvider } from "@/context/AuthContext";
-import { TicketProvider } from "@/context/TicketContext";
 
-export function Providers({ children }: { children: React.ReactNode }) {
-    return (
-        <AuthProvider>
-            <TicketProvider>{children}</TicketProvider>
-        </AuthProvider>
-    );
+interface User {
+    id: number;
+    name: string;
+    email: string;
+}
+
+export function Providers({
+    children,
+    initialUser = null
+}: {
+    children: React.ReactNode;
+    initialUser?: User | null;
+}) {
+    return <AuthProvider initialUser={initialUser}>{children}</AuthProvider>;
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope, Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
+import { getUserFromCookie } from "@/lib/session";
 
 const manrope = Manrope({
     subsets: ["latin"],
@@ -22,9 +23,11 @@ export const metadata: Metadata = {
     description: "La Plataforma Editorial de Entradas"
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children
 }: Readonly<{ children: React.ReactNode }>) {
+    const initialUser = await getUserFromCookie();
+
     return (
         <html lang="es" className={`${manrope.variable} ${inter.variable}`}>
             <head>
@@ -34,7 +37,7 @@ export default function RootLayout({
                 />
             </head>
             <body>
-                <Providers>{children}</Providers>
+                <Providers initialUser={initialUser}>{children}</Providers>
             </body>
         </html>
     );
