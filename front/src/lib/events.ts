@@ -1,7 +1,7 @@
 import type { Event } from "@repo/types";
 import { cookies } from "next/headers";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+const API_URL = process.env.API_URL ?? "http://localhost:3001";
 
 const MOCK_EVENTS: Event[] = [
     {
