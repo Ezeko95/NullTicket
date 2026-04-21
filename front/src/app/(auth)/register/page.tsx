@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 
 export default function RegisterPage() {
+    const { register } = useAuth();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -22,8 +24,7 @@ export default function RegisterPage() {
 
         setIsLoading(true);
         try {
-            // TODO: conectar con authService cuando esté listo
-            console.log("register", { name, email, password });
+            await register(name, email, password);
         } catch (err) {
             setError(
                 err instanceof Error ? err.message : "Error al registrarse"

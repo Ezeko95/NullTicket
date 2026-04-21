@@ -1,21 +1,32 @@
-import type { RegisterRequest } from "@repo/types";
+import {
+    type RegisterRequest,
+    LoginResponse,
+    LoginRequest,
+    ErrorsNumber
+} from "@repo/types";
 import type { Request, Response } from "express";
+import * as jwt from "jsonwebtoken";
 import { HttpError } from "../common/HttpError.js";
-import { register } from "../services/authService.js";
+import authService from "../services/authService.js";
 
 const hasRegisterFields = (body: unknown): body is RegisterRequest =>
     typeof body === "object" &&
     body !== null &&
+    "name" in body &&
     "email" in body &&
     "password" in body &&
+    typeof body.name === "string" &&
     typeof body.email === "string" &&
     typeof body.password === "string";
 
 const parseRegisterRequest = (body: unknown): RegisterRequest => {
     if (!hasRegisterFields(body)) {
-        throw new HttpError("Email and password are required.", 400);
+        throw new HttpError("Email, name and password are required.", 400);
     }
 
+    const normalizedName = body.name
+        .trim()
+        .replace(/\b\w/g, (c) => c.toUpperCase());
     const normalizedEmail = body.email.trim().toLowerCase();
 
     if (!normalizedEmail || !normalizedEmail.includes("@") || !body.password) {
@@ -23,6 +34,7 @@ const parseRegisterRequest = (body: unknown): RegisterRequest => {
     }
 
     return {
+        name: normalizedName,
         email: normalizedEmail,
         password: body.password
     };
@@ -31,10 +43,21 @@ const parseRegisterRequest = (body: unknown): RegisterRequest => {
 export const registerController = async (req: Request, res: Response) => {
     try {
         const registerRequest = parseRegisterRequest(req.body);
-        const result = await register(registerRequest);
+        const result = await authService.register(registerRequest);
+
+        const token = jwt.sign(
+            {
+                id: result.user.id,
+                email: result.user.email,
+                name: result.user.name
+            },
+            process.env.JWT_SECRET ?? "secret"
+        );
+        res.setHeader("Authorization", `Bearer ${token}`);
 
         res.status(result.created ? 201 : 200).json({
             ok: true,
+            token,
             user: result.user
         });
     } catch (error) {
@@ -52,3 +75,35 @@ export const registerController = async (req: Request, res: Response) => {
         });
     }
 };
+
+export async function loginController(req: Request, res: Response) {
+    try {
+        const { email, password } = req.body as LoginRequest;
+
+        const [token, user] = await authService.login(email, password);
+
+        if (token && user) {
+            res.setHeader("Authorization", `Bearer ${token}`);
+            return res.status(200).json({
+                token,
+                user
+            } as LoginResponse);
+        }
+
+        if (!token && user)
+            return res.status(401).json({
+                message: "passwords must be equal",
+                errorNumber: ErrorsNumber.PasswordError
+            });
+
+        return res.status(401).json({
+            message: "user not found",
+            errorNumber: ErrorsNumber.UserNotFound
+        });
+    } catch {
+        return res.status(500).json({
+            ok: false,
+            error: "Internal server error."
+        });
+    }
+}

@@ -1,16 +1,11 @@
 "use client";
 
-import {
-    createContext,
-    useContext,
-    useState,
-    useEffect,
-    useCallback
-} from "react";
+import { createContext, useContext, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { loginAction, registerAction, logoutAction } from "@/actions/auth";
 
 interface User {
-    id: string;
+    id: number;
     name: string;
     email: string;
 }
@@ -19,81 +14,62 @@ interface AuthContextValue {
     user: User | null;
     isLoading: boolean;
     login: (email: string, password: string) => Promise<void>;
+    register: (name: string, email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
-}
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
-const TOKEN_KEY = "token";
-
-function setTokenCookie(token: string) {
-    document.cookie = `${TOKEN_KEY}=${token}; path=/; SameSite=Lax`;
-}
-
-function clearTokenCookie() {
-    document.cookie = `${TOKEN_KEY}=; path=/; max-age=0`;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-    const [user, setUser] = useState<User | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+export function AuthProvider({
+    children,
+    initialUser = null
+}: {
+    children: React.ReactNode;
+    initialUser?: User | null;
+}) {
+    const [user, setUser] = useState<User | null>(initialUser);
+    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
-
-    useEffect(() => {
-        const token = localStorage.getItem(TOKEN_KEY);
-
-        const loadUser = token
-            ? fetch(`${API_URL}/auth/me`, {
-                  headers: { Authorization: `Bearer ${token}` }
-              })
-            : Promise.resolve(null);
-
-        loadUser
-            .then((res) => (res?.ok ? res.json() : null))
-            .then((data: User | null) => setUser(data))
-            .catch(() => {
-                localStorage.removeItem(TOKEN_KEY);
-                clearTokenCookie();
-            })
-            .finally(() => setIsLoading(false));
-    }, []);
 
     const login = useCallback(
         async (email: string, password: string) => {
-            const res = await fetch(`${API_URL}/auth/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
-            });
-
-            if (!res.ok) {
-                const { message } = await res
-                    .json()
-                    .catch(() => ({ message: "Error al iniciar sesión" }));
-                throw new Error(message);
+            setIsLoading(true);
+            try {
+                const result = await loginAction(email, password);
+                if ("error" in result) throw new Error(result.error);
+                setUser(result.user);
+                router.push("/");
+            } finally {
+                setIsLoading(false);
             }
+        },
+        [router]
+    );
 
-            const { token, user: loggedUser }: { token: string; user: User } =
-                await res.json();
-
-            localStorage.setItem(TOKEN_KEY, token);
-            setTokenCookie(token);
-            setUser(loggedUser);
-            router.push("/");
+    const register = useCallback(
+        async (name: string, email: string, password: string) => {
+            setIsLoading(true);
+            try {
+                const result = await registerAction(name, email, password);
+                if ("error" in result) throw new Error(result.error);
+                setUser(result.user);
+                router.push("/");
+            } finally {
+                setIsLoading(false);
+            }
         },
         [router]
     );
 
     const logout = useCallback(async () => {
-        localStorage.removeItem(TOKEN_KEY);
-        clearTokenCookie();
         setUser(null);
-        router.push("/login");
-    }, [router]);
+        await logoutAction();
+    }, []);
 
     return (
-        <AuthContext.Provider value={{ user, isLoading, login, logout }}>
+        <AuthContext.Provider
+            value={{ user, isLoading, login, register, logout }}
+        >
             {children}
         </AuthContext.Provider>
     );

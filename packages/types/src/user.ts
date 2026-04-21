@@ -1,4 +1,4 @@
-export interface IUser {
+export interface User {
     id: number;
 
     name: string;
@@ -7,3 +7,5 @@ export interface IUser {
 
     password: string;
 }
+
+export type SafeUser = Pick<User, "id" | "name" | "email">;

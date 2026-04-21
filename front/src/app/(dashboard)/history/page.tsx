@@ -1,7 +1,4 @@
-"use client";
-
 import Image from "next/image";
-import { useTickets } from "@/context/TicketContext";
 
 const upcomingTickets = [
     {
@@ -44,8 +41,6 @@ const pastTickets = [
 ];
 
 export default function HistoryPage() {
-    const { misTickets } = useTickets();
-
     return (
         <div className="max-w-screen-2xl mx-auto px-8 pb-24 pt-8">
             {/* Encabezado */}
@@ -59,15 +54,6 @@ export default function HistoryPage() {
                 >
                     Historial
                 </h1>
-                {misTickets > 0 && (
-                    <p className="text-on-surface-variant font-body mt-4">
-                        Tenés{" "}
-                        <span className="font-bold text-primary">
-                            {misTickets}
-                        </span>{" "}
-                        entrada{misTickets !== 1 ? "s" : ""} en tu colección.
-                    </p>
-                )}
             </div>
 
             {/* Próximos */}

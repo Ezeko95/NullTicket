@@ -3,9 +3,10 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "tsx watch src/index.ts",
+        "seed": "node --env-file=.env seed/index.js",
+        "dev": "tsx watch --env-file=.env src/index.ts",
         "build": "tsc -p tsconfig.json",
-        "start": "node dist/index.js",
+        "start": "node --env-file=.env dist/index.js",
         "lint": "eslint . --no-error-on-unmatched-pattern",
         "lint:fix": "eslint . --fix --no-error-on-unmatched-pattern"
     },
