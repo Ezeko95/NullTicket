@@ -92,12 +92,7 @@ export function EventCard(event: Event) {
                                 Ver Entradas
                             </span>
                         ) : (
-                            <Link
-                                href={`/events/${id}`}
-                                className="editorial-gradient text-on-primary px-5 py-2 rounded-lg font-headline font-bold text-sm tracking-tight transition-transform active:scale-95 hover:opacity-90"
-                            >
-                                Ver Entradas
-                            </Link>
+                            <Link href={`/eventos/${id}`}>Ver Entradas</Link>
                         )}
                     </div>
                 </div>
