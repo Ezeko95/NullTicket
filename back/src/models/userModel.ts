@@ -6,12 +6,12 @@ export class User implements UserContract {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column("text")
     name: string;
 
-    @Column()
+    @Column("text")
     email: string;
 
-    @Column()
+    @Column("text")
     password: string;
 }
