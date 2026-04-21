@@ -7,10 +7,10 @@ export interface Sector {
 
 export interface Evento {
     id: number;
-    name: string;          // Cambió de nombre a name
-    location: string;      // Nuevo campo
-    date: string;          // Nuevo campo
+    name: string; // Cambió de nombre a name
+    location: string; // Nuevo campo
+    date: string; // Nuevo campo
     availableTickets: number; // Cambió de stock a availableTickets
-    image: string;         // Cambió de imagenUrl a image
-    sectors: Sector[];     // Estructura nueva de precios
+    image: string; // Cambió de imagenUrl a image
+    sectors: Sector[]; // Estructura nueva de precios
 }
