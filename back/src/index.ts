@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import express from "express";
+import morgan from "morgan";
 import {
     registerController,
     loginController
@@ -16,6 +17,7 @@ const app = express();
 const port = process.env.PORT ?? "3001";
 
 await initializeDB();
+app.use(morgan("dev"));
 app.use(express.json());
 
 app.get("/", (_req, res) => {

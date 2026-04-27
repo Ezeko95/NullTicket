@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 
 const SESSION_COOKIE = "token";
 
-const PROTECTED_PATHS = ["/discover", "/history", "/concierge"];
+const PROTECTED_PATHS = ["/discover", "/history", "/concierge", "/events"];
 
 export function proxy(request: NextRequest) {
     if (process.env.DISABLE_AUTH === "true") return NextResponse.next();
