@@ -12,6 +12,7 @@ import {
 import { getUserTicketsController } from "./controllers/ticketController.js";
 import { authMiddleware } from "./middleware/authMiddleware.js";
 import { initializeDB } from "./dataSource.js";
+import { ErrorHandlerMiddleware } from "./middleware/errorHandlerMiddleware.js";
 
 const app = express();
 const port = process.env.PORT ?? "3001";
@@ -19,6 +20,7 @@ const port = process.env.PORT ?? "3001";
 await initializeDB();
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(ErrorHandlerMiddleware);
 
 app.get("/", (_req, res) => {
     res.json({
