@@ -1,13 +1,13 @@
-import {
-    type RegisterRequest,
-    LoginResponse,
-    LoginRequest,
-    ErrorsNumber
-} from "@repo/types";
+import type { LoginRequest, LoginResponse, RegisterRequest } from "@repo/types";
 import type { Request, Response } from "express";
-import * as jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { HttpError } from "../common/HttpError.js";
 import authService from "../services/authService.js";
+
+const ErrorsNumber = {
+    PasswordError: 1,
+    UserNotFound: 2
+} as const;
 
 const hasRegisterFields = (body: unknown): body is RegisterRequest =>
     typeof body === "object" &&
@@ -26,7 +26,7 @@ const parseRegisterRequest = (body: unknown): RegisterRequest => {
 
     const normalizedName = body.name
         .trim()
-        .replace(/\b\w/g, (c) => c.toUpperCase());
+        .replace(/\b\w/g, (c: string) => c.toUpperCase());
     const normalizedEmail = body.email.trim().toLowerCase();
 
     if (!normalizedEmail || !normalizedEmail.includes("@") || !body.password) {

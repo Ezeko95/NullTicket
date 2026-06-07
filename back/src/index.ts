@@ -20,7 +20,6 @@ const port = process.env.PORT ?? "3001";
 await initializeDB();
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(ErrorHandlerMiddleware);
 
 app.get("/", (_req, res) => {
     res.json({
@@ -34,6 +33,8 @@ app.post("/register", registerController);
 app.get("/events", eventsController);
 app.get("/events/:eventId", eventByIdController);
 app.get("/me/tickets", authMiddleware, getUserTicketsController);
+
+app.use(ErrorHandlerMiddleware);
 
 app.listen(port, () => {
     console.log(`API running on http://localhost:${port}`);

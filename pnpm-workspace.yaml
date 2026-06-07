@@ -3,8 +3,8 @@ packages:
     - "front"
     - "packages/*"
 allowBuilds:
-    bcrypt: false
     better-sqlite3: true
+    bcrypt: false
     esbuild: false
     protobufjs: false
     sharp: false

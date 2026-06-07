@@ -1,4 +1,4 @@
-import { User as UserContract } from "@repo/types";
+import type { User as UserContract } from "@repo/types";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
