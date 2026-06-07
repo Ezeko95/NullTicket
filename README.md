@@ -17,6 +17,14 @@ Formateo y lint:
 - Para formatear todo el repo: `pnpm format`
 - Para chequear formato sin escribir cambios: `pnpm format:check`
 
+> **Importante:** `better-sqlite3` requiere compilar sus bindings nativos. Si no lo hacés, todos los endpoints que usan la base de datos van a fallar. Después de hacer `pnpm install`, corré:
+>
+> ```
+> pnpm approve-builds
+> ```
+>
+> Seleccioná `better-sqlite3` y confirmá. Luego volvé a correr `pnpm install`.
+
 Archivos base agregados:
 
 - `package.json` root

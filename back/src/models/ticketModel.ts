@@ -6,27 +6,27 @@ export class Ticket implements TicketContract {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column("int")
     eventId: number;
 
-    @Column()
+    @Column("text")
     eventName: string;
 
-    @Column()
+    @Column("text")
     eventDate: string;
 
-    @Column()
+    @Column("text")
     sector: EventSectorName;
 
     @Column("float")
     price: number;
 
-    @Column()
+    @Column("text")
     status: "active" | "used" | "cancelled";
 
-    @Column()
+    @Column("int")
     userId: number;
 
-    @Column()
+    @Column("text")
     purchasedAt: string;
 }

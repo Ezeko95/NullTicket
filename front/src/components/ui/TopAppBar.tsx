@@ -30,7 +30,7 @@ export function TopAppBar({ variant = "dashboard" }: TopAppBarProps) {
                         NullTicket
                     </Link>
 
-                    {variant === "dashboard" && (
+                    {(variant === "dashboard" || !!user) && (
                         <div className="hidden md:flex gap-8 items-center font-headline font-bold tracking-tight">
                             {navLinks.map(({ href, label }) => {
                                 const active = pathname.startsWith(href);

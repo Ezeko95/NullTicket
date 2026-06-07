@@ -11,7 +11,7 @@
         "dev:web": "corepack pnpm --filter front dev",
         "dev:api": "corepack pnpm --filter api dev",
         "build:web": "corepack pnpm --filter front build",
-        "build:api": "corepack pnpm --filter api build",
+        "build:api": "corepack pnpm --filter @repo/types build && corepack pnpm --filter api build",
         "start:web": "corepack pnpm --filter front start",
         "start:api": "corepack pnpm --filter api start"
     },

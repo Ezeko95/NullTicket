@@ -1,10 +1,13 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import type { Event } from "@repo/types";
+import { EventCard } from "@/components/events/EventCard";
 
 interface Message {
     role: "user" | "ai";
     text: string;
+    events?: Event[];
 }
 
 const consultasPrevias = [
@@ -60,7 +63,8 @@ export default function ConciergePage() {
                     role: "ai",
                     text: res.ok
                         ? data.text
-                        : (data.error ?? "Ocurrió un error inesperado.")
+                        : (data.error ?? "Ocurrió un error inesperado."),
+                    events: res.ok ? (data.events ?? []) : []
                 }
             ]);
         } catch {
@@ -138,19 +142,27 @@ export default function ConciergePage() {
                 {/* Mensajes */}
                 <div className="flex-1 overflow-y-auto px-8 py-8 space-y-6">
                     {messages.map((msg, i) => (
-                        <div
-                            key={i}
-                            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-                        >
+                        <div key={i} className="flex flex-col gap-4">
                             <div
-                                className={`max-w-[70%] px-6 py-4 rounded-2xl font-body text-base leading-relaxed whitespace-pre-wrap ${
-                                    msg.role === "user"
-                                        ? "editorial-gradient text-on-primary rounded-br-sm"
-                                        : "bg-surface-container-lowest shadow-ambient text-on-surface rounded-tl-sm"
-                                }`}
+                                className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                             >
-                                {msg.text}
+                                <div
+                                    className={`max-w-[70%] px-6 py-4 rounded-2xl font-body text-base leading-relaxed whitespace-pre-wrap ${
+                                        msg.role === "user"
+                                            ? "editorial-gradient text-on-primary rounded-br-sm"
+                                            : "bg-surface-container-lowest shadow-ambient text-on-surface rounded-tl-sm"
+                                    }`}
+                                >
+                                    {msg.text}
+                                </div>
                             </div>
+                            {msg.events && msg.events.length > 0 && (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-2">
+                                    {msg.events.map((event) => (
+                                        <EventCard key={event.id} {...event} />
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     ))}
 

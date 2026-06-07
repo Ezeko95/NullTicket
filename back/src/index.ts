@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import express from "express";
+import morgan from "morgan";
 import {
     registerController,
     loginController
@@ -11,11 +12,13 @@ import {
 import { getUserTicketsController } from "./controllers/ticketController.js";
 import { authMiddleware } from "./middleware/authMiddleware.js";
 import { initializeDB } from "./dataSource.js";
+import { ErrorHandlerMiddleware } from "./middleware/errorHandlerMiddleware.js";
 
 const app = express();
 const port = process.env.PORT ?? "3001";
 
 await initializeDB();
+app.use(morgan("dev"));
 app.use(express.json());
 
 app.get("/", (_req, res) => {
@@ -30,6 +33,8 @@ app.post("/register", registerController);
 app.get("/events", eventsController);
 app.get("/events/:eventId", eventByIdController);
 app.get("/me/tickets", authMiddleware, getUserTicketsController);
+
+app.use(ErrorHandlerMiddleware);
 
 app.listen(port, () => {
     console.log(`API running on http://localhost:${port}`);

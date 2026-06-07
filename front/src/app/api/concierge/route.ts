@@ -1,62 +1,58 @@
 import { GoogleGenAI } from "@google/genai";
+import type { Event } from "@repo/types";
 import { NextRequest, NextResponse } from "next/server";
+import { getEvents } from "@/lib/events";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
 
-const SYSTEM_PROMPT = `Sos el Concierge Editorial de NullTicket, una plataforma de entradas curada para experiencias culturales exclusivas. Tu rol es ayudar a los usuarios a encontrar eventos que se ajusten a sus intereses, estado de ánimo o preferencias, con un tono refinado, cálido y editorial.
-
-## Catálogo de eventos disponibles (datos mock)
-
-1. **The Future Sound Visual Arts Festival**
-   - Fecha: 24–26 de Octubre, 2025
-   - Lugar: Tokyo, Japón
-   - Precio: USD 320
-   - Descripción: Festival de arte digital y música experimental en el corazón de Shibuya.
-
-2. **Serie Orquesta Skyline**
-   - Fecha: 15 de Noviembre, 2025
-   - Lugar: Buenos Aires, Argentina — Teatro Colón
-   - Precio: ARS 45.000
-   - Descripción: Ciclo de conciertos con la Orquesta Estable interpretando compositores contemporáneos.
-
-3. **Cumbre de Gastronomía Experimental**
-   - Fecha: 3 de Diciembre, 2025
-   - Lugar: Berlín, Alemania
-   - Precio: EUR 280
-   - Descripción: 12 chefs de vanguardia en una noche de cocina conceptual y degustación.
-
-4. **The Modernist Gala**
-   - Fecha: 28 de Noviembre, 2025
-   - Lugar: Nueva York, EE.UU. — The Met
-   - Precio: USD 550
-   - Descripción: Gala de arte moderno con piezas en subasta y performance en vivo.
-
-5. **La Experiencia Orquestal**
-   - Fecha: 30 de Octubre, 2025
-   - Lugar: Buenos Aires, Argentina — Teatro Ópera
-   - Precio: ARS 28.000
-   - Descripción: Noche inmersiva con proyecciones sincronizadas y música en vivo.
-
-6. **Jazz en el Club Mítico**
-   - Fecha: 8 de Noviembre, 2025
-   - Lugar: Buenos Aires, Argentina — Notorious
-   - Precio: ARS 12.000
-   - Descripción: Sesión de jazz moderno con artistas internacionales en sala íntima.
-
-7. **Bienal de Arte Contemporáneo**
-   - Fecha: 10–15 de Diciembre, 2025
-   - Lugar: Berlín, Alemania
-   - Precio: EUR 95
-   - Descripción: Muestra de 200 artistas emergentes de todo el mundo en el Hamburger Bahnhof.
+const PROMPT_BASE = `Sos el Concierge Editorial de NullTicket, una plataforma de entradas curada para experiencias culturales exclusivas. Tu rol es ayudar a los usuarios a encontrar eventos que se ajusten a sus intereses, estado de ánimo o preferencias, con un tono refinado, cálido y editorial.
 
 ## Reglas de respuesta
 
 - Respondé siempre en español rioplatense, con voseo natural.
 - Tono: editorial, sofisticado pero accesible. Nunca frío ni robótico.
-- Cuando recomendés eventos, mencioná nombre, lugar y fecha. El precio solo si el usuario lo pregunta.
+- Cuando recomendés eventos, mencioná el nombre y la fecha. El precio solo si el usuario lo pregunta.
 - Si el usuario pregunta por algo fuera de tu catálogo, indicá elegantemente que no tenés ese evento disponible hoy y ofrecé una alternativa del catálogo.
-- Mantené las respuestas concisas: máximo 3–4 oraciones o una lista corta de eventos. Nunca excedas 300 palabras.
-- No inventes eventos que no estén en el catálogo.`;
+- Mantené las respuestas concisas: máximo 3–4 oraciones. Nunca excedas 200 palabras.
+- No inventes eventos que no estén en el catálogo.
+
+## Formato de respuesta
+
+SIEMPRE respondé con un objeto JSON válido, sin markdown ni bloques de código:
+{"text":"tu respuesta aquí","eventIds":[1,2]}
+
+- "text": tu respuesta en lenguaje natural
+- "eventIds": IDs de los eventos que mencionás o recomendás. Array vacío [] si no recomendás ninguno.`;
+
+function formatPrice(price: number) {
+    return new Intl.NumberFormat("es-AR", {
+        style: "currency",
+        currency: "ARS",
+        maximumFractionDigits: 0
+    }).format(price);
+}
+
+function buildSystemPrompt(events: Event[]): string {
+    const catalog = events
+        .map((event) => {
+            const date = new Date(event.date).toLocaleDateString("es-AR", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                timeZone: "UTC"
+            });
+            const minPrice = Math.min(...event.sectors.map((s) => s.price));
+            const availability =
+                event.availableTickets === 0
+                    ? "Agotado"
+                    : `${event.availableTickets} entradas disponibles`;
+
+            return `- ID:${event.id} | **${event.name}** | ${date} | ${event.location} | desde ${formatPrice(minPrice)} | ${availability}`;
+        })
+        .join("\n");
+
+    return `${PROMPT_BASE}\n\n## Catálogo de eventos disponibles\n\n${catalog}`;
+}
 
 interface ChatMessage {
     role: "user" | "ai";
@@ -65,10 +61,10 @@ interface ChatMessage {
 
 export async function POST(req: NextRequest) {
     try {
-        const { messages, input } = (await req.json()) as {
-            messages: ChatMessage[];
-            input: string;
-        };
+        const [{ messages, input }, events] = await Promise.all([
+            req.json() as Promise<{ messages: ChatMessage[]; input: string }>,
+            getEvents()
+        ]);
 
         const history = messages
             .filter((m) => m.text)
@@ -86,13 +82,26 @@ export async function POST(req: NextRequest) {
             model: "gemini-3.1-flash-lite-preview",
             contents,
             config: {
-                systemInstruction: SYSTEM_PROMPT
+                systemInstruction: buildSystemPrompt(events),
+                responseMimeType: "application/json"
             }
         });
 
-        return NextResponse.json({ text: response.text });
+        const parsed = JSON.parse(response.text ?? "{}") as {
+            text?: string;
+            eventIds?: number[];
+        };
+
+        const recommendedEvents = events.filter((e) =>
+            (parsed.eventIds ?? []).includes(e.id)
+        );
+
+        return NextResponse.json({
+            text: parsed.text ?? "",
+            events: recommendedEvents
+        });
     } catch (error) {
-        console.error("[concierge] Gemini error:", error);
+        console.error("[concierge] error:", error);
         return NextResponse.json(
             { error: "No se pudo procesar tu consulta. Intentá de nuevo." },
             { status: 500 }

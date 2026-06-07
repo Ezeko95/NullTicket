@@ -6,19 +6,19 @@ export class Event implements EventContract {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column("text")
     name: string;
 
-    @Column()
+    @Column("text")
     location: string;
 
-    @Column()
+    @Column("text")
     date: string;
 
-    @Column({ nullable: true })
+    @Column({ type: "text", nullable: true })
     image?: string;
 
-    @Column()
+    @Column("int")
     availableTickets: number;
 
     @Column("simple-json")

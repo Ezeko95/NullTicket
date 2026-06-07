@@ -69,41 +69,31 @@ export const registerController = async (req: Request, res: Response) => {
             return;
         }
 
-        res.status(500).json({
-            ok: false,
-            error: "Internal server error."
-        });
+        throw error;
     }
 };
 
 export async function loginController(req: Request, res: Response) {
-    try {
-        const { email, password } = req.body as LoginRequest;
+    const { email, password } = req.body as LoginRequest;
 
-        const [token, user] = await authService.login(email, password);
+    const [token, user] = await authService.login(email, password);
 
-        if (token && user) {
-            res.setHeader("Authorization", `Bearer ${token}`);
-            return res.status(200).json({
-                token,
-                user
-            } as LoginResponse);
-        }
-
-        if (!token && user)
-            return res.status(401).json({
-                message: "passwords must be equal",
-                errorNumber: ErrorsNumber.PasswordError
-            });
-
-        return res.status(401).json({
-            message: "user not found",
-            errorNumber: ErrorsNumber.UserNotFound
-        });
-    } catch {
-        return res.status(500).json({
-            ok: false,
-            error: "Internal server error."
-        });
+    if (token && user) {
+        res.setHeader("Authorization", `Bearer ${token}`);
+        return res.status(200).json({
+            token,
+            user
+        } as LoginResponse);
     }
+
+    if (!token && user)
+        return res.status(401).json({
+            message: "passwords must be equal",
+            errorNumber: ErrorsNumber.PasswordError
+        });
+
+    return res.status(401).json({
+        message: "user not found",
+        errorNumber: ErrorsNumber.UserNotFound
+    });
 }
