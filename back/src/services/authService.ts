@@ -1,6 +1,6 @@
 import type { RegisterRequest, SafeUser } from "@repo/types";
 import bcrypt from "bcryptjs";
-import * as jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { HttpError } from "../common/HttpError.js";
 import { User } from "../models/userModel.js";
 import userRepo from "../repositories/userRepo.js";

@@ -1,6 +1,6 @@
 import type { SafeUser } from "@repo/types";
 import type { NextFunction, Request, Response } from "express";
-import * as jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import userRepo from "../repositories/userRepo.js";
 
 export type AuthPayload = SafeUser;
