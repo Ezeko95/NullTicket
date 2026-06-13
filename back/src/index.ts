@@ -11,7 +11,8 @@ import {
 } from "./controllers/eventsController.js";
 import {
     deleteUserTicketController,
-    getUserTicketsController
+    getUserTicketsController,
+    purchaseUserTicketController
 } from "./controllers/ticketController.js";
 import { authMiddleware } from "./middleware/authMiddleware.js";
 import { initializeDB } from "./dataSource.js";
@@ -36,6 +37,7 @@ app.post("/register", registerController);
 app.get("/events", eventsController);
 app.get("/events/:eventId", eventByIdController);
 app.get("/me/tickets", authMiddleware, getUserTicketsController);
+app.post("/me/tickets", authMiddleware, purchaseUserTicketController);
 app.delete("/me/tickets/:ticketId", authMiddleware, deleteUserTicketController);
 
 app.use(ErrorHandlerMiddleware);

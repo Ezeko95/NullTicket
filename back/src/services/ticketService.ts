@@ -1,3 +1,4 @@
+import type { PurchaseTicketRequest } from "@repo/types";
 import ticketRepo from "../repositories/ticketRepo.js";
 import type { Ticket } from "../models/ticketModel.js";
 import { HttpError } from "../common/HttpError.js";
@@ -28,6 +29,47 @@ class TicketService {
         }
 
         await ticketRepo.deleteByIdAndUserId(ticketId, userId);
+    }
+
+    async purchaseUserTicket(
+        userId: number,
+        { eventId, sector }: PurchaseTicketRequest
+    ): Promise<Ticket> {
+        const event = await ticketRepo.findEventById(eventId);
+
+        if (!event) {
+            throw new HttpError("Event not found.", 404);
+        }
+
+        if (startOfDay(new Date(event.date)) < startOfDay(new Date())) {
+            throw new HttpError("Past events cannot be purchased.", 409);
+        }
+
+        const eventSector = event.sectors.find(({ name }) => name === sector);
+
+        if (!eventSector) {
+            throw new HttpError("A valid event sector is required.", 400);
+        }
+
+        if (event.availableTickets <= 0) {
+            throw new HttpError("Event is sold out.", 409);
+        }
+
+        const soldInSector = await ticketRepo.countSoldByEventIdAndSector(
+            eventId,
+            sector
+        );
+
+        if (soldInSector >= eventSector.capacity) {
+            throw new HttpError("Event sector is sold out.", 409);
+        }
+
+        return ticketRepo.createTicketAndDecrementStock(
+            userId,
+            event,
+            sector,
+            eventSector.price
+        );
     }
 }
 
