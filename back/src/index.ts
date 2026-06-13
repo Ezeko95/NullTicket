@@ -9,7 +9,10 @@ import {
     eventsController,
     eventByIdController
 } from "./controllers/eventsController.js";
-import { getUserTicketsController } from "./controllers/ticketController.js";
+import {
+    deleteUserTicketController,
+    getUserTicketsController
+} from "./controllers/ticketController.js";
 import { authMiddleware } from "./middleware/authMiddleware.js";
 import { initializeDB } from "./dataSource.js";
 import { ErrorHandlerMiddleware } from "./middleware/errorHandlerMiddleware.js";
@@ -33,6 +36,7 @@ app.post("/register", registerController);
 app.get("/events", eventsController);
 app.get("/events/:eventId", eventByIdController);
 app.get("/me/tickets", authMiddleware, getUserTicketsController);
+app.delete("/me/tickets/:ticketId", authMiddleware, deleteUserTicketController);
 
 app.use(ErrorHandlerMiddleware);
 
