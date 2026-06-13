@@ -13,3 +13,8 @@ export type Ticket = {
     userId: number;
     purchasedAt: string;
 };
+
+export type PurchaseTicketRequest = {
+    eventId: number;
+    sector: EventSectorName;
+};
