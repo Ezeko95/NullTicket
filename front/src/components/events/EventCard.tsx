@@ -32,9 +32,14 @@ export function EventCard(event: Event) {
     const price = minPrice(event);
     const soldOut = availableTickets === 0;
 
+    const detailHref = `/events/${id}`;
+
     return (
         <div className="group flex flex-col space-y-4">
-            <div className="relative aspect-4/5 overflow-hidden rounded-xl bg-surface-container flex items-center justify-center">
+            <Link
+                href={detailHref}
+                className="relative aspect-4/5 overflow-hidden rounded-xl bg-surface-container flex items-center justify-center"
+            >
                 {event.image ? (
                     <Image
                         src={event.image}
@@ -55,7 +60,7 @@ export function EventCard(event: Event) {
                         </span>
                     </div>
                 )}
-            </div>
+            </Link>
 
             <div className="flex items-start gap-4">
                 <div className="border-l-4 border-primary-fixed pl-4 shrink-0">
@@ -68,9 +73,11 @@ export function EventCard(event: Event) {
                 </div>
 
                 <div className="flex-1 min-w-0">
-                    <h3 className="font-headline text-xl font-extrabold text-primary leading-tight tracking-tight mb-1">
-                        {name}
-                    </h3>
+                    <Link href={detailHref}>
+                        <h3 className="font-headline text-xl font-extrabold text-primary leading-tight tracking-tight mb-1 hover:underline underline-offset-4">
+                            {name}
+                        </h3>
+                    </Link>
                     <p className="font-body text-sm text-on-surface-variant mb-1 truncate">
                         {location}
                     </p>
@@ -87,18 +94,16 @@ export function EventCard(event: Event) {
                                 ? `desde ${formatPrice(price)}`
                                 : ""}
                         </span>
-                        {soldOut ? (
-                            <span className="bg-surface-container text-on-surface-variant px-5 py-2 rounded-lg font-headline font-bold text-sm tracking-tight opacity-50 cursor-not-allowed">
-                                Ver Entradas
-                            </span>
-                        ) : (
-                            <Link
-                                href={`/events/${id}`}
-                                className="editorial-gradient text-on-primary px-5 py-2 rounded-lg font-headline font-bold text-sm tracking-tight transition-transform active:scale-95 hover:opacity-90"
-                            >
-                                Ver Entradas
-                            </Link>
-                        )}
+                        <Link
+                            href={detailHref}
+                            className={
+                                soldOut
+                                    ? "bg-surface-container text-on-surface-variant px-5 py-2 rounded-lg font-headline font-bold text-sm tracking-tight hover:opacity-80 transition-opacity"
+                                    : "editorial-gradient text-on-primary px-5 py-2 rounded-lg font-headline font-bold text-sm tracking-tight transition-transform active:scale-95 hover:opacity-90"
+                            }
+                        >
+                            {soldOut ? "Ver detalle" : "Ver Entradas"}
+                        </Link>
                     </div>
                 </div>
             </div>

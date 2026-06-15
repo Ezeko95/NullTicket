@@ -34,3 +34,11 @@ export async function getEventById(id: number): Promise<Event> {
 
     return res.json() as Promise<Event>;
 }
+
+export async function getEvent(id: number): Promise<Event | null> {
+    try {
+        return await getEventById(id);
+    } catch {
+        return null;
+    }
+}

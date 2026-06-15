@@ -31,20 +31,16 @@ export function AuthProvider({
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
-    const login = useCallback(
-        async (email: string, password: string) => {
-            setIsLoading(true);
-            try {
-                const result = await loginAction(email, password);
-                if ("error" in result) throw new Error(result.error);
-                setUser(result.user);
-                router.push("/");
-            } finally {
-                setIsLoading(false);
-            }
-        },
-        [router]
-    );
+    const login = useCallback(async (email: string, password: string) => {
+        setIsLoading(true);
+        try {
+            const result = await loginAction(email, password);
+            if ("error" in result) throw new Error(result.error);
+            setUser(result.user);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
     const register = useCallback(
         async (name: string, email: string, password: string) => {
