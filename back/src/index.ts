@@ -6,8 +6,11 @@ import {
     loginController
 } from "./controllers/authController.js";
 import {
+    createEventController,
+    deleteEventController,
+    eventByIdController,
     eventsController,
-    eventByIdController
+    patchEventController
 } from "./controllers/eventsController.js";
 import {
     deleteUserTicketController,
@@ -36,9 +39,27 @@ app.post("/login", loginController);
 app.post("/register", registerController);
 app.get("/events", eventsController);
 app.get("/events/:eventId", eventByIdController);
-app.get("/me/tickets", authMiddleware, getUserTicketsController);
-app.post("/me/tickets", authMiddleware, purchaseUserTicketController);
-app.delete("/me/tickets/:ticketId", authMiddleware, deleteUserTicketController);
+
+// ADMIN
+app.post("/events", authMiddleware({ role: "admin" }), createEventController);
+app.patch(
+    "/events/:eventId",
+    authMiddleware({ role: "admin" }),
+    patchEventController
+);
+app.delete(
+    "/events/:eventId",
+    authMiddleware({ role: "admin" }),
+    deleteEventController
+);
+
+app.get("/me/tickets", authMiddleware(), getUserTicketsController);
+app.post("/me/tickets", authMiddleware(), purchaseUserTicketController);
+app.delete(
+    "/me/tickets/:ticketId",
+    authMiddleware(),
+    deleteUserTicketController
+);
 
 app.use(ErrorHandlerMiddleware);
 

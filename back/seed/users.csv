@@ -1,9 +1,9 @@
-name,email,password
-Juan García,juan.garcia@nullticket.com,password123
-María López,maria.lopez@nullticket.com,password123
-Carlos Rodríguez,carlos.rodriguez@nullticket.com,password123
-Ana Martínez,ana.martinez@nullticket.com,password123
-Lucas Fernández,lucas.fernandez@nullticket.com,password123
-Sofía Herrera,sofia.herrera@nullticket.com,password123
-Diego Romero,diego.romero@nullticket.com,password123
-Valentina Torres,valentina.torres@nullticket.com,password123
+name,email,password,role
+Juan García,juan.garcia@nullticket.com,password123,admin
+María López,maria.lopez@nullticket.com,password123,user
+Carlos Rodríguez,carlos.rodriguez@nullticket.com,password123,user
+Ana Martínez,ana.martinez@nullticket.com,password123,user
+Lucas Fernández,lucas.fernandez@nullticket.com,password123,user
+Sofía Herrera,sofia.herrera@nullticket.com,password123,user
+Diego Romero,diego.romero@nullticket.com,password123,user
+Valentina Torres,valentina.torres@nullticket.com,password123,user

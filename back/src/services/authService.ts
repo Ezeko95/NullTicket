@@ -17,7 +17,8 @@ class AuthService {
         return {
             id: user.id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            role: user.role
         };
     }
 
@@ -53,7 +54,12 @@ class AuthService {
         return canLogin
             ? ([
                   jwt.sign(
-                      { id: user.id, email: user.email, name: user.name },
+                      {
+                          id: user.id,
+                          email: user.email,
+                          name: user.name,
+                          role: user.role
+                      },
                       process.env.JWT_SECRET ?? "secret"
                   ),
                   this.toSafeUser(user)

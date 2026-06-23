@@ -24,6 +24,10 @@ class TicketRepo {
         return this.eventRepository.findOneBy({ id });
     }
 
+    countByEventId(eventId: number): Promise<number> {
+        return this.repository.countBy({ eventId });
+    }
+
     countSoldByEventIdAndSector(
         eventId: number,
         sector: EventSectorName
