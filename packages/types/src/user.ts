@@ -1,3 +1,5 @@
+export type UserRole = "user" | "admin";
+
 export interface User {
     id: number;
 
@@ -6,6 +8,8 @@ export interface User {
     email: string;
 
     password: string;
+
+    role: UserRole;
 }
 
-export type SafeUser = Pick<User, "id" | "name" | "email">;
+export type SafeUser = Pick<User, "id" | "name" | "email" | "role">;

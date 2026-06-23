@@ -1,5 +1,6 @@
 import { AppDataSource } from "../dataSource.js";
 import { User } from "../models/userModel.js";
+import type { UserRole } from "@repo/types";
 
 class UserRepo {
     private readonly repository = AppDataSource.getRepository(User);
@@ -12,8 +13,13 @@ class UserRepo {
         return this.repository.findOneBy({ id });
     }
 
-    async create(name: string, email: string, password: string): Promise<User> {
-        const user = this.repository.create({ name, email, password });
+    async create(
+        name: string,
+        email: string,
+        password: string,
+        role: UserRole = "user"
+    ): Promise<User> {
+        const user = this.repository.create({ name, email, password, role });
         return this.repository.save(user);
     }
 }

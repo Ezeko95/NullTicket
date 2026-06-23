@@ -15,3 +15,7 @@ export type Event = {
     availableTickets: number;
     image?: string;
 };
+
+export type CreateEventRequest = Omit<Event, "id">;
+
+export type PatchEventRequest = Partial<Omit<Event, "id">>;

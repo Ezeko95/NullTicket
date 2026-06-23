@@ -60,7 +60,8 @@ for (const row of userRows) {
         userRepo.create({
             name: row.name,
             email: row.email,
-            password: passwordHash
+            password: passwordHash,
+            role: row.role || "user"
         })
     );
 }

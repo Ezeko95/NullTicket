@@ -49,7 +49,8 @@ export const registerController = async (req: Request, res: Response) => {
             {
                 id: result.user.id,
                 email: result.user.email,
-                name: result.user.name
+                name: result.user.name,
+                role: result.user.role
             },
             process.env.JWT_SECRET ?? "secret"
         );
