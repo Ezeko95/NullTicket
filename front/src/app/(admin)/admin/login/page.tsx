@@ -11,7 +11,7 @@ export default async function AdminLoginPage() {
     }
 
     return (
-        <div className="grid min-h-[calc(100vh-120px)] grid-cols-1 overflow-hidden rounded-[2rem] border border-outline-variant bg-surface shadow-ambient lg:grid-cols-2">
+        <div className="grid min-h-[calc(100vh-120px)] grid-cols-1 overflow-hidden rounded-4xl border border-outline-variant bg-surface shadow-ambient lg:grid-cols-2">
             <div className="hidden lg:flex editorial-gradient flex-col justify-between p-16">
                 <div>
                     <p className="text-primary-fixed text-xs font-black uppercase tracking-widest mb-6 font-label">

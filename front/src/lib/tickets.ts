@@ -21,6 +21,11 @@ export async function getMyTickets(): Promise<Ticket[]> {
     return res.json() as Promise<Ticket[]>;
 }
 
+export async function getMyTicketById(id: number): Promise<Ticket | null> {
+    const tickets = await getMyTickets();
+    return tickets.find((ticket) => ticket.id === id) ?? null;
+}
+
 export async function purchaseTicket(
     eventId: number,
     sector: EventSectorName

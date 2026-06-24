@@ -1,4 +1,7 @@
 import type { Ticket } from "@repo/types";
+import Image from "next/image";
+import Link from "next/link";
+import { getEvents } from "@/lib/events";
 import { getMyTickets } from "@/lib/tickets";
 
 const SECTOR_LABELS: Record<string, string> = {
@@ -44,13 +47,47 @@ function TicketInitial({ name }: { name: string }) {
     );
 }
 
-function UpcomingTicketCard({ ticket }: { ticket: Ticket }) {
+function TicketEventImage({
+    name,
+    image,
+    sizes
+}: {
+    name: string;
+    image?: string;
+    sizes: string;
+}) {
+    if (image) {
+        return (
+            <Image
+                src={image}
+                alt={name}
+                fill
+                className="object-cover"
+                sizes={sizes}
+            />
+        );
+    }
+
+    return <TicketInitial name={name} />;
+}
+
+function UpcomingTicketCard({
+    ticket,
+    image
+}: {
+    ticket: Ticket;
+    image?: string;
+}) {
     const statusLabel = STATUS_LABELS[ticket.status] ?? ticket.status;
 
     return (
         <div className="bg-surface-container-lowest rounded-2xl overflow-hidden flex flex-col md:flex-row">
             <div className="relative w-full md:w-40 h-48 md:h-auto shrink-0">
-                <TicketInitial name={ticket.eventName} />
+                <TicketEventImage
+                    name={ticket.eventName}
+                    image={image}
+                    sizes="(max-width: 768px) 100vw, 10rem"
+                />
             </div>
             <div className="p-8 flex flex-col justify-between flex-1">
                 <div>
@@ -74,20 +111,27 @@ function UpcomingTicketCard({ ticket }: { ticket: Ticket }) {
                     </p>
                 </div>
                 <div className="flex items-center gap-3 mt-6">
-                    <button className="editorial-gradient text-on-primary px-6 py-2.5 rounded-lg font-headline font-bold text-sm hover:opacity-90 transition-opacity cursor-not-allowed opacity-50">
+                    <Link
+                        href={`/history/${ticket.id}`}
+                        className="editorial-gradient text-on-primary px-6 py-2.5 rounded-lg font-headline font-bold text-sm hover:opacity-90 transition-opacity"
+                    >
                         Ver Pase
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>
     );
 }
 
-function PastTicketCard({ ticket }: { ticket: Ticket }) {
+function PastTicketCard({ ticket, image }: { ticket: Ticket; image?: string }) {
     return (
         <div className="bg-surface-container-lowest rounded-2xl p-5 flex items-center gap-5">
             <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0">
-                <TicketInitial name={ticket.eventName} />
+                <TicketEventImage
+                    name={ticket.eventName}
+                    image={image}
+                    sizes="3.5rem"
+                />
             </div>
             <div className="min-w-0">
                 <p className="text-xs text-on-surface-variant font-bold font-label uppercase tracking-widest mb-1">
@@ -105,7 +149,8 @@ function PastTicketCard({ ticket }: { ticket: Ticket }) {
 }
 
 export default async function HistoryPage() {
-    const tickets = await getMyTickets();
+    const [tickets, events] = await Promise.all([getMyTickets(), getEvents()]);
+    const eventImages = new Map(events.map((event) => [event.id, event.image]));
     const now = new Date();
 
     const upcoming = tickets.filter(
@@ -143,6 +188,7 @@ export default async function HistoryPage() {
                             <UpcomingTicketCard
                                 key={ticket.id}
                                 ticket={ticket}
+                                image={eventImages.get(ticket.eventId)}
                             />
                         ))}
                     </div>
@@ -160,7 +206,11 @@ export default async function HistoryPage() {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {past.map((ticket) => (
-                            <PastTicketCard key={ticket.id} ticket={ticket} />
+                            <PastTicketCard
+                                key={ticket.id}
+                                ticket={ticket}
+                                image={eventImages.get(ticket.eventId)}
+                            />
                         ))}
                     </div>
                 )}

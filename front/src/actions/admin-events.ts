@@ -3,6 +3,8 @@
 import type { Event, EventSectorName } from "@repo/types";
 import {
     createAdminEvent,
+    deleteAdminEvent,
+    patchAdminEvent,
     type CreateAdminEventInput
 } from "@/lib/admin-events";
 
@@ -127,6 +129,62 @@ export async function createEventAction(
                 error instanceof Error
                     ? error.message
                     : "No se pudo crear el evento."
+        };
+    }
+}
+
+function parseEventId(eventId: string): number {
+    const parsed = Number(eventId);
+
+    if (!Number.isInteger(parsed) || parsed <= 0) {
+        throw new Error("El identificador del evento no es válido.");
+    }
+
+    return parsed;
+}
+
+export async function updateEventAction(
+    eventId: string,
+    name: string,
+    location: string,
+    date: string,
+    sectorsJson: string,
+    image = ""
+): Promise<{ event: Event } | { error: string }> {
+    try {
+        const id = parseEventId(eventId);
+        const input = toCreateEventInput(
+            name,
+            location,
+            date,
+            sectorsJson,
+            image
+        );
+        const event = await patchAdminEvent(id, input);
+        return { event: toSerializableEvent(event) };
+    } catch (error) {
+        return {
+            error:
+                error instanceof Error
+                    ? error.message
+                    : "No se pudo actualizar el evento."
+        };
+    }
+}
+
+export async function deleteEventAction(
+    eventId: string
+): Promise<{ success: true } | { error: string }> {
+    try {
+        const id = parseEventId(eventId);
+        await deleteAdminEvent(id);
+        return { success: true };
+    } catch (error) {
+        return {
+            error:
+                error instanceof Error
+                    ? error.message
+                    : "No se pudo eliminar el evento."
         };
     }
 }

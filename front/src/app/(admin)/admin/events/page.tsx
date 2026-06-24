@@ -5,7 +5,14 @@ import { AdminEventsTable } from "@/components/admin/AdminEventsTable";
 import { getAdminEvents } from "@/lib/admin-events";
 import { getAdminSession } from "@/lib/admin-session";
 
-export default async function AdminEventsPage() {
+interface AdminEventsPageProps {
+    searchParams: Promise<{ updated?: string }>;
+}
+
+export default async function AdminEventsPage({
+    searchParams
+}: AdminEventsPageProps) {
+    const { updated: updatedEventName } = await searchParams;
     const adminSession = await getAdminSession();
 
     if (!adminSession) {
@@ -46,6 +53,12 @@ export default async function AdminEventsPage() {
                     Nuevo evento
                 </Link>
             </div>
+
+            {updatedEventName ? (
+                <div className="mb-6 rounded-2xl border border-primary/15 bg-primary/5 px-4 py-3 text-sm text-on-surface font-body">
+                    Evento actualizado: <strong>{updatedEventName}</strong>
+                </div>
+            ) : null}
 
             {loadError ? (
                 <div className="mb-6 rounded-2xl border border-error/20 bg-error-container px-4 py-3 text-sm text-on-error-container font-body">

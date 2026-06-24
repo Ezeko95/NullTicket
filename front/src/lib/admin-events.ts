@@ -1,4 +1,9 @@
-import type { CreateEventRequest, Event, EventSectorName } from "@repo/types";
+import type {
+    CreateEventRequest,
+    Event,
+    EventSectorName,
+    PatchEventRequest
+} from "@repo/types";
 import { cookies } from "next/headers";
 import { ADMIN_SESSION_COOKIE } from "@/lib/admin-session";
 
@@ -36,6 +41,73 @@ function missingBackendMessage(): string {
 
 function unexpectedResponseMessage(): string {
     return "El backend respondió, pero no devolvió un evento válido.";
+}
+
+function readBackendErrorMessage(errorBody: unknown, fallback: string): string {
+    if (
+        errorBody &&
+        typeof errorBody === "object" &&
+        "message" in errorBody &&
+        typeof errorBody.message === "string"
+    ) {
+        return errorBody.message;
+    }
+
+    if (
+        errorBody &&
+        typeof errorBody === "object" &&
+        "error" in errorBody &&
+        typeof errorBody.error === "string"
+    ) {
+        return errorBody.error;
+    }
+
+    return fallback;
+}
+
+function isValidEvent(event: Partial<Event>): event is Event {
+    return (
+        typeof event.id === "number" &&
+        typeof event.name === "string" &&
+        typeof event.location === "string" &&
+        typeof event.date === "string" &&
+        typeof event.availableTickets === "number" &&
+        Array.isArray(event.sectors)
+    );
+}
+
+function parseEventResponse(event: Partial<Event>): Event {
+    if (!isValidEvent(event)) {
+        throw new Error(unexpectedResponseMessage());
+    }
+
+    return JSON.parse(JSON.stringify(event)) as Event;
+}
+
+function wrapAdminFetchError(error: unknown): never {
+    if (error instanceof Error) {
+        if (error.cause instanceof Error) {
+            throw error.cause;
+        }
+
+        if (error.message.includes("fetch failed")) {
+            throw new Error(missingBackendMessage());
+        }
+
+        throw error;
+    }
+
+    throw new Error(missingBackendMessage());
+}
+
+async function getAdminAuthToken(): Promise<string> {
+    const token = (await cookies()).get(ADMIN_SESSION_COOKIE)?.value;
+
+    if (!token) {
+        throw new Error("La sesión de admin venció. Volvé a iniciar sesión.");
+    }
+
+    return token;
 }
 
 export function getEventCapacity(event: Event): number {
@@ -137,15 +209,51 @@ function toCreateEventRequest(
     };
 }
 
+function toPatchEventRequest(
+    payload: CreateAdminEventInput
+): PatchEventRequest {
+    const availableTickets = payload.sectors.reduce(
+        (sum, sector) => sum + sector.capacity,
+        0
+    );
+
+    return {
+        name: payload.name,
+        location: payload.location,
+        date: payload.date,
+        image: payload.image,
+        sectors: payload.sectors,
+        availableTickets
+    };
+}
+
+export async function getAdminEventById(id: number): Promise<Event> {
+    try {
+        const response = await fetch(`${API_URL}/events/${id}`, {
+            cache: "no-store"
+        });
+
+        if (response.status === 404) {
+            throw new Error("No se encontró el evento.");
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                `No se pudo cargar el evento (${response.status}).`
+            );
+        }
+
+        const event = (await response.json()) as Partial<Event>;
+        return parseEventResponse(event);
+    } catch (error) {
+        wrapAdminFetchError(error);
+    }
+}
+
 export async function createAdminEvent(
     payload: CreateAdminEventInput
 ): Promise<Event> {
-    const token = (await cookies()).get(ADMIN_SESSION_COOKIE)?.value;
-
-    if (!token) {
-        throw new Error("La sesión de admin venció. Volvé a iniciar sesión.");
-    }
-
+    const token = await getAdminAuthToken();
     const body = toCreateEventRequest(payload);
 
     try {
@@ -161,49 +269,78 @@ export async function createAdminEvent(
 
         if (!response.ok) {
             const errorBody = await response.json().catch(() => null);
-            const message =
-                errorBody &&
-                typeof errorBody === "object" &&
-                "message" in errorBody &&
-                typeof errorBody.message === "string"
-                    ? errorBody.message
-                    : errorBody &&
-                        typeof errorBody === "object" &&
-                        "error" in errorBody &&
-                        typeof errorBody.error === "string"
-                      ? errorBody.error
-                      : `No se pudo crear el evento (${response.status}).`;
-
-            throw new Error(message);
+            throw new Error(
+                readBackendErrorMessage(
+                    errorBody,
+                    `No se pudo crear el evento (${response.status}).`
+                )
+            );
         }
 
         const event = (await response.json()) as Partial<Event>;
-
-        if (
-            typeof event.id !== "number" ||
-            typeof event.name !== "string" ||
-            typeof event.location !== "string" ||
-            typeof event.date !== "string" ||
-            typeof event.availableTickets !== "number" ||
-            !Array.isArray(event.sectors)
-        ) {
-            throw new Error(unexpectedResponseMessage());
-        }
-
-        return JSON.parse(JSON.stringify(event)) as Event;
+        return parseEventResponse(event);
     } catch (error) {
-        if (error instanceof Error) {
-            if (error.cause instanceof Error) {
-                throw error.cause;
-            }
+        wrapAdminFetchError(error);
+    }
+}
 
-            if (error.message.includes("fetch failed")) {
-                throw new Error(missingBackendMessage());
-            }
+export async function patchAdminEvent(
+    eventId: number,
+    payload: CreateAdminEventInput
+): Promise<Event> {
+    const token = await getAdminAuthToken();
+    const body = toPatchEventRequest(payload);
 
-            throw error;
+    try {
+        const response = await fetch(`${API_URL}/events/${eventId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(body),
+            cache: "no-store"
+        });
+
+        if (!response.ok) {
+            const errorBody = await response.json().catch(() => null);
+            throw new Error(
+                readBackendErrorMessage(
+                    errorBody,
+                    `No se pudo actualizar el evento (${response.status}).`
+                )
+            );
         }
 
-        throw new Error(missingBackendMessage());
+        const event = (await response.json()) as Partial<Event>;
+        return parseEventResponse(event);
+    } catch (error) {
+        wrapAdminFetchError(error);
+    }
+}
+
+export async function deleteAdminEvent(eventId: number): Promise<void> {
+    const token = await getAdminAuthToken();
+
+    try {
+        const response = await fetch(`${API_URL}/events/${eventId}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            cache: "no-store"
+        });
+
+        if (!response.ok) {
+            const errorBody = await response.json().catch(() => null);
+            throw new Error(
+                readBackendErrorMessage(
+                    errorBody,
+                    `No se pudo eliminar el evento (${response.status}).`
+                )
+            );
+        }
+    } catch (error) {
+        wrapAdminFetchError(error);
     }
 }
