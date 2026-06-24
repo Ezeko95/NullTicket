@@ -1,5 +1,6 @@
 import type { Event } from "@repo/types";
 import Link from "next/link";
+import { AdminEventActions } from "@/components/admin/AdminEventActions";
 import {
     EVENT_SECTOR_LABELS,
     formatAdminEventDate,
@@ -65,7 +66,8 @@ export function AdminEventsTable({ events }: AdminEventsTableProps) {
                             "Vendidas",
                             "Desde",
                             "Sectores",
-                            "Estado"
+                            "Estado",
+                            "Acciones"
                         ].map((column) => (
                             <th
                                 key={column}
@@ -136,6 +138,17 @@ export function AdminEventsTable({ events }: AdminEventsTableProps) {
                                     >
                                         {STATUS_LABELS[status]}
                                     </span>
+                                </td>
+                                <td className="px-4 py-4">
+                                    <AdminEventActions
+                                        eventId={event.id}
+                                        eventName={event.name}
+                                        eventLocation={event.location}
+                                        eventDateLabel={formatAdminEventDate(
+                                            event.date
+                                        )}
+                                        canModify={sold === 0}
+                                    />
                                 </td>
                             </tr>
                         );
